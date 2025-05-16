@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
 import { Box, Flex, Heading, Code, Text } from '@radix-ui/themes';
 import { ErrorBoundary } from 'react-error-boundary';
-// Assuming UiWalletAccount is available from wallet-standard or a similar context
+// Importing from correct paths
 import type { UiWalletAccount } from '@wallet-standard/react'; 
-import { WalletAccountIcon } from './WalletAccountIcon';
-import { Balance } from './Balance';
+import { WalletAccountIcon } from '../WalletAccountIcon'; // Fixed import path
+import { Balance } from '../Balance'; // Fixed import path to ensure correct component
 import { Spinner } from '../common/Spinner';
 import { skyBlue, golden } from '../../theme/colors';
 
