@@ -1,12 +1,25 @@
-import { Box, Container, Flex } from '@radix-ui/themes';
-import { useState } from 'react';
+import { Box, Container, Flex, Heading, Text, Code } from '@radix-ui/themes';
+import { useState, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { Sidebar } from '../components/Sidebar';
 import { HomePage } from '../components/HomePage';
 import { InsurancePolicyPage } from '../components/InsurancePolicyPage';
+import { HomeHeader } from '../components/home/HomeHeader';
+import { WalletInfoSection } from '../components/wallet/WalletInfoSection';
+import { WalletFeatures } from '../components/wallet/WalletFeatures';
+import { getUiWalletAccountStorageKey } from '../utils/walletUtils';
+import { skyBlue } from '../theme/colors';
 
 function Root() {
     const [currentPage, setCurrentPage] = useState<'home' | 'policy'>('home');
+    const [selectedWalletAccount, setSelectedWalletAccount] = useState(null);
+    const [chain, setChain] = useState(null);
+    
+    const errorBoundaryResetKeys = [
+        chain,
+        selectedWalletAccount && getUiWalletAccountStorageKey(selectedWalletAccount),
+    ].filter(Boolean);
     
     return (
         <Flex>
@@ -14,7 +27,28 @@ function Root() {
             <Box flexGrow="1">
                 <Container mx={{ initial: '3', xs: '6' }} style={{ background: '#f0fdfa', borderRadius: 24, paddingBottom: 32, marginLeft: 0 }}>
                     {currentPage === 'home' ? (
-                        <HomePage />
+                        <>
+                            <HomeHeader />
+                            
+                            <Box mt="8">
+                                {selectedWalletAccount ? (
+                                    <Flex gap="6" direction="column">
+                                        <WalletInfoSection 
+                                            selectedWalletAccount={selectedWalletAccount}
+                                            chain={chain}
+                                        />
+                                        <WalletFeatures 
+                                            selectedWalletAccount={selectedWalletAccount}
+                                            errorBoundaryResetKeys={errorBoundaryResetKeys}
+                                        />
+                                    </Flex>
+                                ) : (
+                                    <Text as="p" align="center" mt="6" style={{ color: skyBlue, fontWeight: 600 }}>
+                                        Click &ldquo;Connect Wallet&rdquo; to get started.
+                                    </Text>
+                                )}
+                            </Box>
+                        </>
                     ) : (
                         <InsurancePolicyPage />
                     )}
@@ -25,40 +59,6 @@ function Root() {
 }
 
 export default Root;
-    const errorBoundaryResetKeys = [
-        chain,
-        selectedWalletAccount && getUiWalletAccountStorageKey(selectedWalletAccount),
-    ].filter(Boolean);
-    return (
-        <Flex>
-            <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <Box flexGrow="1">
-                <Container mx={{ initial: '3', xs: '6' }} style={{ background: '#f0fdfa', borderRadius: 24, paddingBottom: 32, marginLeft: 0 }}>
-                    {currentPage === 'home' ? (
-                        <>
-                            {/* AMOCA Mascot */}
-                            <Box
-                                as="img"
-                                src="/BLUE/a2.svg"
-                                alt="AMOCA Climate Guardian"
-                                style={{ display: 'block', margin: '16px auto', width: 150, height: 'auto' }}
-                            />
-                            <HomeSection />
-                            <Box mt="8">
-                                {selectedWalletAccount ? (
-                                    <Flex gap="6" direction="column">
-                                        <Flex gap="2">
-                                            <Flex align="center" gap="3" flexGrow="1">
-                                                <WalletAccountIcon account={selectedWalletAccount} height="48" width="48" />
-                                                <Box>
-                                                    <Heading as="h4" size="3" style={{ color: skyBlue }}>
-                                                        {selectedWalletAccount.label ?? 'Unlabeled Account'}
-                                                    </Heading>
-                                                    <Code variant="outline" truncate size={{ initial: '1', xs: '2' }}>
-                                                        {selectedWalletAccount.address}
-                                                    </Code>
-                                                </Box>
-                                            </Flex>
                                             <Flex direction="column" align="end">
                                                 <Heading as="h4" size="3" style={{ color: golden }}>
                                                     Balance
