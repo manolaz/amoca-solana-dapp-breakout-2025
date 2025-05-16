@@ -1,51 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Text, Flex, Card, Heading } from '@radix-ui/themes';
+import { Box, Button, Text, Flex, Card } from '@radix-ui/themes';
 import {
     ComposableMap,
     Geographies,
     Geography,
     ZoomableGroup,
-    Marker,
-    Line
+    Marker
 } from 'react-simple-maps';
 
-// Weather API response types
-type WeatherDesc = { value: string };
-type WeatherIconUrl = { value: string };
-type AreaInfo = {
-    value: string;
-};
-
-type CurrentCondition = {
-    temp_C: string;
-    temp_F: string;
-    weatherDesc: WeatherDesc[];
-    humidity: string;
-    cloudcover: string;
-    FeelsLikeC: string;
-    pressure: string;
-    windspeedKmph: string;
-    precipMM: string;
-    uvIndex: string;
-    visibility: string;
-};
-
-type WeatherData = {
-    current_condition: CurrentCondition[];
-    nearest_area: [{ 
-        areaName: AreaInfo[];
-        country: AreaInfo[];
-        latitude: string;
-        longitude: string;
-    }];
-    weather: [{
-        maxtempC: string;
-        mintempC: string;
-        avgtempC: string;
-        sunHour: string;
-        date: string;
-    }];
-};
+// Import new components and types
+import { WeatherData, LocationInfo } from './weather/types';
+import { TemperatureZones } from './weather/TemperatureZones';
+import { WeatherStatusCard } from './weather/WeatherStatusCard';
+import { CurrentConditionsGrid } from './weather/CurrentConditionsGrid';
+import { ForecastCard } from './weather/ForecastCard';
+import { ClimateRiskInsights } from './weather/ClimateRiskInsights';
 
 const geoUrl = 'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json';
 
@@ -55,7 +24,7 @@ type Props = {
     zoom: number;
     locating: boolean;
     onShareLocation: () => void;
-    onLocationDetected?: (locationInfo: { city: string; country: string; lat: number; lng: number }, weatherData: WeatherData | null) => void;
+    onLocationDetected?: (locationInfo: LocationInfo, weatherData: WeatherData | null) => void;
 };
 
 export function LocationMap({
@@ -66,16 +35,14 @@ export function LocationMap({
     onShareLocation,
     onLocationDetected
 }: Props) {
-    // new state for reverse geocoding
-    const [locationInfo, setLocationInfo] = useState<{ city: string; country: string } | null>(null);
+    // State for reverse geocoding
+    const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
     const [reverseLoading, setReverseLoading] = useState(false);
-    // new state for climate data
+    // State for climate data
     const [climateData, setClimateData] = useState<WeatherData | null>(null);
     const [climateLoading, setClimateLoading] = useState(false);
-    // Add missing state for details toggle
-    const [showDetails, setShowDetails] = useState(false);
 
-    // fetch city and country once we have coords
+    // Fetch city and country once we have coords
     useEffect(() => {
         if (userLocation) {
             setReverseLoading(true);
@@ -87,7 +54,13 @@ export function LocationMap({
                     const addr = data.address || {};
                     const city = addr.city || addr.town || addr.village || '';
                     const country = addr.country || '';
-                    setLocationInfo({ city, country });
+                    const locationData = { 
+                        city, 
+                        country, 
+                        lat: userLocation.lat, 
+                        lng: userLocation.lng 
+                    };
+                    setLocationInfo(locationData);
                 })
                 .catch(() => setLocationInfo(null))
                 .finally(() => setReverseLoading(false));
@@ -103,12 +76,8 @@ export function LocationMap({
                 .then((data: WeatherData) => {
                     setClimateData(data);
                     // Notify parent component of location and weather data
-                    if (onLocationDetected && userLocation) {
-                        onLocationDetected({
-                            ...locationInfo, 
-                            lat: userLocation.lat,
-                            lng: userLocation.lng
-                        }, data);
+                    if onLocationDetected) {
+                        onLocationDetected(locationInfo, data);
                     }
                 })
                 .catch(err => {
@@ -117,7 +86,7 @@ export function LocationMap({
                 })
                 .finally(() => setClimateLoading(false));
         }
-    }, [locationInfo, onLocationDetected, userLocation]);
+    }, [locationInfo, onLocationDetected]);
 
     // Dynamic map properties
     const mapCenter = userLocation 
@@ -126,67 +95,6 @@ export function LocationMap({
         
     const mapZoom = climateData ? 4 : zoom;
     
-    // Color based on temperature - create a color gradient from blue (cold) to red (hot)
-    const getWeatherColor = (temp: number): string => {
-        if (temp < 0) return '#0ea5e9';  // Freezing - blue
-        if (temp < 15) return '#22d3ee'; // Cool - cyan
-        if (temp < 25) return '#10b981'; // Moderate - green
-        if (temp < 32) return '#f59e0b'; // Warm - orange
-        return '#ef4444';                // Hot - red
-    };
-
-    // Get temperature zones if we have climate data
-    const tempZones = climateData ? getTemperatureZones() : [];
-    
-    // Create temperature zones based on nearby locations with similar climate
-    function getTemperatureZones() {
-        if (!climateData || !userLocation) return [];
-        
-        const temp = parseInt(climateData.current_condition[0].temp_C);
-        const color = getWeatherColor(temp);
-        
-        // Create some approximated zones around the user location
-        // These would be better if they came from actual data points
-        return [
-            {
-                radius: 100, // km
-                color: color,
-                opacity: 0.2,
-                coords: convertToCartesian(userLocation, 100)
-            },
-            {
-                radius: 50, // km
-                color: color, 
-                opacity: 0.3,
-                coords: convertToCartesian(userLocation, 50)
-            },
-            {
-                radius: 25, // km
-                color: color,
-                opacity: 0.4, 
-                coords: convertToCartesian(userLocation, 25)
-            }
-        ];
-    }
-
-    // Convert km to approximated lat/lng coordinates
-    function convertToCartesian(center: {lat: number, lng: number}, radiusKm: number) {
-        const points = [];
-        const R = 6371; // Earth's radius in km
-        const angleStep = 36; // 10 degree steps
-        
-        for (let i = 0; i < 360; i += angleStep) {
-            const angle = i * Math.PI / 180;
-            // Simple approximation of lat/lng from distance
-            const lat = center.lat + (radiusKm / R) * (180 / Math.PI) * Math.sin(angle);
-            const lng = center.lng + (radiusKm / R) * (180 / Math.PI) * Math.cos(angle) / Math.cos(center.lat * Math.PI / 180);
-            points.push([lng, lat]);
-        }
-        // Close the loop
-        points.push(points[0]);
-        return points;
-    }
-
     return (
         <Box mb="5" style={{ background: '#e0f2fe', borderRadius: 12, padding: 16 }}>
             <Flex justify="between" align="start" mb="3">
@@ -201,18 +109,7 @@ export function LocationMap({
                         {locating ? 'Locating...' : 'Share My Location'}
                     </Button>
                 </Box>
-                {locationInfo && climateData && (
-                    <Card style={{ 
-                        background: getWeatherColor(parseInt(climateData.current_condition[0].temp_C)), 
-                        color: 'white', 
-                        padding: '8px 12px'
-                    }}>
-                        <Flex gap="2" align="center">
-                            <Text weight="bold" size="3">{climateData.current_condition[0].temp_C}°C</Text>
-                            <Text size="2">{climateData.current_condition[0].weatherDesc[0].value}</Text>
-                        </Flex>
-                    </Card>
-                )}
+                {locationInfo && climateData && <WeatherStatusCard climateData={climateData} />}
             </Flex>
 
             <Card style={{ 
@@ -222,6 +119,109 @@ export function LocationMap({
                 borderRadius: '12px', 
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 position: 'relative'
+            }}>
+                {/* Dynamic labels for climate conditions */}
+                {locationInfo && climateData && (
+                    <Box style={{
+                        position: 'absolute',
+                        top: 10,
+                        left: 10,
+                        zIndex: 10,
+                        background: 'rgba(255,255,255,0.8)',
+                        padding: '8px',
+                        borderRadius: '6px',
+                    }}>
+                        <Text weight="bold">{locationInfo.city}, {locationInfo.country}</Text>
+                        <Text size="1">Weather: {climateData.current_condition[0].weatherDesc[0].value}</Text>
+                    </Box>
+                )}
+                
+                <div style={{ width: '100%', height: 400 }}>
+                    <ComposableMap projection="geoMercator" width={960} height={400}>
+                        <ZoomableGroup center={mapCenter} zoom={mapZoom}>
+                            <Geographies geography={geoUrl}>
+                                {({ geographies }) =>
+                                    geographies.map(geo => (
+                                        <Geography
+                                            key={geo.rsmKey}
+                                            geography={geo}
+                                            style={{
+                                                default: { fill: '#b6e0fe', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' },
+                                                hover: { fill: '#38bdf8', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' },
+                                                pressed: { fill: '#0ea5e9', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' }
+                                            }}
+                                        />
+                                    ))
+                                }
+                            </Geographies>
+                            
+                            {/* Temperature zones */}
+                            {userLocation && climateData && (
+                                <TemperatureZones userLocation={userLocation} climateData={climateData} />
+                            )}
+                            
+                            {userLocation && (
+                                <Marker coordinates={[userLocation.lng, userLocation.lat]}>
+                                    <g transform="translate(-12, -24)">
+                                        <path 
+                                            d="M12 0c-4.4 0-8 3.6-8 8 0 5.4 7.1 16 7.4 16.2.4.4 1.7.4 2.2 0 .4-.4 7.4-11 7.4-16.2 0-4.4-3.6-8-8-8zm0 11.5c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z" 
+                                            fill="rgba(255,0,0,0.9)"
+                                            stroke="#fff"
+                                            strokeWidth="1"
+                                        />
+                                    </g>
+                                </Marker>
+                            )}
+                        </ZoomableGroup>
+                    </ComposableMap>
+                </div>
+            </Card>
+
+            {/* Location information display */}
+            <Flex gap="2" wrap="wrap">
+                {userLocation && reverseLoading && (
+                    <Text as="p" size="2" style={{ color: '#0e7490' }}>
+                        Detecting your location...
+                    </Text>
+                )}
+                
+                {userLocation && !reverseLoading && locationInfo && (
+                    <Card style={{ 
+                        flex: '1 1 260px', 
+                        background: 'white',
+                        padding: '12px'
+                    }}>
+                        <Text size="2" weight="bold">Location</Text>
+                        <Text as="p" size="2">
+                            {locationInfo.city}, {locationInfo.country}
+                        </Text>
+                        <Text as="p" size="1" color="gray">
+                            Coordinates: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+                        </Text>
+                    </Card>
+                )}
+
+                {/* Climate data loading indicator */}
+                {climateLoading && (
+                    <Text size="2" style={{ color: '#0e7490' }}>Loading climate data...</Text>
+                )}
+            </Flex>
+
+            {/* Weather components */}
+            {!climateLoading && climateData && locationInfo && (
+                <>
+                    <CurrentConditionsGrid climateData={climateData} />
+                    
+                    <Box mt="3">
+                        <ForecastCard climateData={climateData} />
+                    </Box>
+                    
+                    <ClimateRiskInsights climateData={climateData} locationInfo={locationInfo} />
+                </>
+            )}
+        </Box>
+    );
+}
             }}>
                 {/* Dynamic labels for climate conditions */}
                 {locationInfo && climateData && (
