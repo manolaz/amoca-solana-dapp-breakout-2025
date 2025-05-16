@@ -1,42 +1,30 @@
-# @solana/example-react-app
+![AMOCA Logo](public/amoca/amoca-logo.png)
 
-This is an example of how to use `@solana/kit` and `@solana/react` to build a React web application.
+# AMOCA: Decentralized Climate Parametric Insurance Dapp
 
-## Features
+AMOCA is a decentralized application (dapp) built on the Solana blockchain, designed to provide parametric insurance solutions for climate-related risks. Leveraging the speed and scalability of Solana, AMOCA enables transparent, automated, and trustless insurance payouts based on real-world climate data.
 
-- Connects to browser wallets that support the Wallet Standard; one or more at a time
-- Fetches and subscribes to the balance of the selected wallet
-- Allows you to sign an arbitrary message using a wallet account
-- Allows you to make a transfer from the selected wallet to any other connected wallet
+Key features:
 
-## Developing
+- **Parametric Insurance:** Automated payouts triggered by predefined climate parameters (e.g., rainfall, temperature, wind speed).
+- **Decentralized & Transparent:** All policies and claims are managed on-chain, ensuring transparency and reducing the need for intermediaries.
+- **Magic Block Scaleup:** Utilizes Magic Block technology to enhance scalability and performance, supporting large-scale adoption.
+- **Solana Breakout Hackathon 2025:** AMOCA is developed as part of the Solana Breakout Hackathon 2025, showcasing innovation in decentralized insurance and climate resilience.
 
-Start a server in development mode.
+Join us in building the future of climate risk management on Solana!
 
-```shell
-pnpm install
-pnpm turbo compile:js compile:typedefs
-pnpm dev
+## Workflow Diagram
+
+```mermaid
+flowchart TD
+    User[Policy Holder] -->|Buys Policy| AMOCA_Dapp[AMOCA Dapp]
+    AMOCA_Dapp -->|Requests Data| Switchboard[Switchboard Data Feed]
+    Switchboard -->|Sends Climate Data| AMOCA_Dapp
+    AMOCA_Dapp -->|Triggers| Solana_Program[Solana Program]
+    Solana_Program -->|Payout| User
+    note1[/"No need to measure real asset damages"/] --- Solana_Program
 ```
 
-Press <kbd>o</kbd> + <kbd>Enter</kbd> to open the app in a browser. Edits to the source code will automatically reload the app.
-
-## Building for deployment
-
-Build a static bundle and HTML for deployment to a webserver.
-
-```shell
-pnpm install
-pnpm turbo build
-```
-
-The contents of the `dist/` directory can now be uploaded to a webserver.
-
-## Enabling Mainnet-Beta
-
-Access to this cluster is typically blocked by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) rules, so it is disabled in the example app by default. To enable it, start the server or compile the application with the `REACT_EXAMPLE_APP_ENABLE_MAINNET` environment variable set to `"true"`.
-
-```shell
-REACT_EXAMPLE_APP_ENABLE_MAINNET=true pnpm dev
-REACT_EXAMPLE_APP_ENABLE_MAINNET=true pnpm build
-```
+- AMOCA leverages a custom on-demand data feed from Switchboard to obtain climate parameters.
+- When a trigger condition is met, the Solana program automatically executes payouts to policy holders.
+- This parametric approach eliminates the need to assess actual damages to real assets.
