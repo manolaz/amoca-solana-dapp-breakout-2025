@@ -14,6 +14,8 @@ import { SelectedWalletAccountContext } from '../context/SelectedWalletAccountCo
 import { HomeSection } from '../components/HomeSection';
 import { InsurancePolicyPage } from '../components/InsurancePolicyPage';
 import { Sidebar } from '../components/Sidebar';
+import { FeaturesSection } from '../components/FeaturesSection';
+import { WalletInfoSection } from '../components/wallet/WalletInfoSection';
 
 const skyBlue = '#38bdf8';
 const mintGreen = '#6ee7b7';
@@ -47,50 +49,14 @@ function Root() {
                             <Box mt="8">
                                 {selectedWalletAccount ? (
                                     <Flex gap="6" direction="column">
-                                        <Flex gap="2">
-                                            <Flex align="center" gap="3" flexGrow="1">
-                                                <WalletAccountIcon account={selectedWalletAccount} height="48" width="48" />
-                                                <Box>
-                                                    <Heading as="h4" size="3" style={{ color: skyBlue }}>
-                                                        {selectedWalletAccount.label ?? 'Unlabeled Account'}
-                                                    </Heading>
-                                                    <Code variant="outline" truncate size={{ initial: '1', xs: '2' }}>
-                                                        {selectedWalletAccount.address}
-                                                    </Code>
-                                                </Box>
-                                            </Flex>
-                                            <Flex direction="column" align="end">
-                                                <Heading as="h4" size="3" style={{ color: golden }}>
-                                                    Balance
-                                                </Heading>
-                                                <ErrorBoundary
-                                                    fallback={<Text>&ndash;</Text>}
-                                                    key={`${selectedWalletAccount.address}:${chain}`}
-                                                >
-                                                    <Suspense fallback={<Spinner loading my="1" />}>
-                                                        <Balance account={selectedWalletAccount} />
-                                                    </Suspense>
-                                                </ErrorBoundary>
-                                            </Flex>
-                                        </Flex>
-                                        <DataList.Root orientation={{ initial: 'vertical', sm: 'horizontal' }} size="3">
-                                            <FeaturePanel label={<span style={{ color: mintGreen }}>Sign Message</span>}>
-                                                <ErrorBoundary
-                                                    FallbackComponent={FeatureNotSupportedCallout}
-                                                    resetKeys={errorBoundaryResetKeys}
-                                                >
-                                                    <SolanaSignMessageFeaturePanel account={selectedWalletAccount} />
-                                                </ErrorBoundary>
-                                            </FeaturePanel>
-                                            <FeaturePanel label={<span style={{ color: skyBlue }}>Sign And Send Transaction</span>}>
-                                                <ErrorBoundary
-                                                    FallbackComponent={FeatureNotSupportedCallout}
-                                                    resetKeys={errorBoundaryResetKeys}
-                                                >
-                                                    <SolanaSignAndSendTransactionFeaturePanel account={selectedWalletAccount} />
-                                                </ErrorBoundary>
-                                            </FeaturePanel>
-                                        </DataList.Root>
+                                        <WalletInfoSection 
+                                            selectedWalletAccount={selectedWalletAccount}
+                                            chain={chain}
+                                        />
+                                        <FeaturesSection 
+                                            selectedWalletAccount={selectedWalletAccount}
+                                            errorBoundaryResetKeys={errorBoundaryResetKeys}
+                                        />
                                     </Flex>
                                 ) : (
                                     <Text as="p" align="center" mt="6" style={{ color: skyBlue, fontWeight: 600 }}>

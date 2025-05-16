@@ -1,5 +1,5 @@
-import { Box, Button, Flex, Separator, Text } from '@radix-ui/themes';
-import { useState, useEffect, useMemo } from 'react';
+import { Box, Button, Flex, Separator, Text, Dialog } from '@radix-ui/themes';
+import { useState, useEffect, useMemo, useContext } from 'react';
 import { RiskTypeSelector } from './risk/RiskTypeSelector';
 import { RiskParameters } from './risk/RiskParameters';
 import { CoverageForm } from './coverage/CoverageForm';
@@ -8,14 +8,21 @@ import { ClaimSimulator } from './claim/ClaimSimulator';
 import { LocationInfo, RiskType } from './risk/types';
 import { baseRiskTypes } from './risk/baseRiskTypes';
 import { isCoastalLocation, isMountainousRegion } from '../utils/locationUtils';
+import { RpcContext } from '../context/RpcContext';
+import { useWalletAccountTransactionSendingSigner } from '@solana/react';
+import { sendTokens, getSignatureFromBytes, AMOCA_ACCOUNT } from '../utils/tokenTransfer';
+import { ChainContext } from '../context/ChainContext';
+import { useSWRConfig } from 'swr';
+import { UiWalletAccount } from '@wallet-standard/react';
 
-// Props to receive location information from parent component
+// Props to receive location information and wallet account from parent component
 interface PolicyFormProps {
     locationInfo?: LocationInfo | null;
     weatherData?: any;
+    walletAccount?: UiWalletAccount;
 }
 
-export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
+export function PolicyForm({ locationInfo, weatherData, walletAccount }: PolicyFormProps) {
     // Location-aware risk types
     const [riskTypes, setRiskTypes] = useState<RiskType[]>(baseRiskTypes);
     
@@ -172,11 +179,68 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
         }));
     };
 
+    // Get RPC and chain context
+    const { rpc } = useContext(RpcContext);
+    const { chain: currentChain, solanaExplorerClusterName } = useContext(ChainContext);
+    const { mutate } = useSWRConfig();
+    
+    // States for transaction
+    const [isSendingTransaction, setIsSendingTransaction] = useState(false);
+    const [transactionError, setTransactionError] = useState<any>(null);
+    const [transactionSignature, setTransactionSignature] = useState<string | null>(null);
+    const [isTransactionDialogOpen, setIsTransactionDialogOpen] = useState(false);
+    
+    // Get transaction signer if wallet account is available
+    const transactionSendingSigner = walletAccount ? 
+        useWalletAccountTransactionSendingSigner(walletAccount, currentChain) : null;
+
+    // Handle form submit
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        
+        if (!transactionSendingSigner || !walletAccount) {
+            alert("Please connect your wallet to purchase a policy");
+            return;
+        }
+        
+        setIsSendingTransaction(true);
+        setTransactionError(null);
+        
+        try {
+            // Send tokens to the AMOCA account
+            const signature = await sendTokens(
+                rpc,
+                transactionSendingSigner,
+                estimatedPremium
+            );
+            
+            // Convert signature bytes to string for display
+            const signatureStr = getSignatureFromBytes(signature);
+            setTransactionSignature(signatureStr);
+            
+            // Update balances via SWR cache
+            void mutate({ address: transactionSendingSigner.address, chain: currentChain });
+            
+            // Generate certificate
+            const svg = generateCertificateSVG();
+            
+            // Show transaction dialog
+            setIsTransactionDialogOpen(true);
+            
+            // No need to download immediately, user can do it from dialog
+        } catch (error) {
+            console.error("Transaction error:", error);
+            setTransactionError(error);
+        } finally {
+            setIsSendingTransaction(false);
+        }
+    }
+
     // SVG certificate generator
     function generateCertificateSVG() {
         const date = new Date().toLocaleDateString();
         return `
-<svg width="480" height="340" xmlns="http://www.w3.org/2000/svg">
+<svg width="480" height="360" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#f0fdfa"/>
@@ -197,8 +261,9 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
     <text x="40" y="230">Premium: <tspan font-weight="bold">${estimatedPremium} SOL</tspan></text>
     <text x="40" y="260">Risk Type: <tspan font-weight="bold">${selectedRisk?.name}</tspan></text>
     <text x="40" y="290">Location: <tspan font-weight="bold">${locationInfo?.city || "N/A"}, ${locationInfo?.country || ""}</tspan></text>
+    <text x="40" y="320">AMOCA Account: <tspan font-weight="bold">${AMOCA_ACCOUNT.slice(0, 12)}...</tspan></text>
   </g>
-  <text x="50%" y="320" text-anchor="middle" font-size="13" fill="#64748b">
+  <text x="50%" y="350" text-anchor="middle" font-size="13" fill="#64748b">
     Date: ${date}
   </text>
 </svg>
@@ -218,13 +283,6 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }, 0);
-    }
-
-    // Handle form submit
-    function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        const svg = generateCertificateSVG();
-        downloadSVG(svg);
     }
 
     // Preview modal state
@@ -305,6 +363,47 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
                 </Box>
             )}
 
+            {/* Transaction Success Dialog */}
+            <Dialog.Root 
+                open={isTransactionDialogOpen} 
+                onOpenChange={open => setIsTransactionDialogOpen(open)}
+            >
+                <Dialog.Content>
+                    <Dialog.Title>Policy Purchased Successfully!</Dialog.Title>
+                    <Box my="4">
+                        <Text as="p" mb="2">
+                            Your policy is now active. The transaction has been sent to the Solana network.
+                        </Text>
+                        <Text as="p" mb="2" size="2" style={{ wordBreak: 'break-all' }}>
+                            <strong>Transaction Signature:</strong> {transactionSignature}
+                        </Text>
+                        <Text as="p" mb="2">
+                            <a 
+                                href={`https://explorer.solana.com/tx/${transactionSignature}?cluster=${solanaExplorerClusterName}`} 
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ color: '#0ea5e9', textDecoration: 'underline' }}
+                            >
+                                View transaction on Solana Explorer
+                            </a>
+                        </Text>
+                    </Box>
+                    <Flex gap="3" justify="end">
+                        <Button 
+                            onClick={() => {
+                                const svg = generateCertificateSVG();
+                                downloadSVG(svg);
+                            }}
+                        >
+                            Download Certificate
+                        </Button>
+                        <Dialog.Close>
+                            <Button variant="soft">Close</Button>
+                        </Dialog.Close>
+                    </Flex>
+                </Dialog.Content>
+            </Dialog.Root>
+
             <form onSubmit={handleSubmit}>
                 <RiskTypeSelector
                     riskTypes={riskTypes}
@@ -361,10 +460,24 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
                     <Button type="button" color="blue" size="3" variant="soft" onClick={handlePreview}>
                         Preview Certificate
                     </Button>
-                    <Button type="submit" color="green" size="3">
-                        Buy Policy
+                    <Button 
+                        type="submit" 
+                        color="green" 
+                        size="3"
+                        disabled={!walletAccount || isSendingTransaction}
+                        loading={isSendingTransaction}
+                    >
+                        {walletAccount ? `Buy Policy (${estimatedPremium} SOL)` : "Connect Wallet to Buy"}
                     </Button>
                 </Flex>
+                
+                {transactionError && (
+                    <Box mt="3" p="3" style={{ background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: 8 }}>
+                        <Text as="p" size="2" style={{ color: '#b91c1c' }}>
+                            Error: {transactionError.message || "Transaction failed"}
+                        </Text>
+                    </Box>
+                )}
             </form>
         </>
     );
