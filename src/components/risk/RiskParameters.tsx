@@ -32,9 +32,9 @@ export function RiskParameters({
     // Function to get color based on parameter value percentage
     const getValueColor = (value: number, min: number, max: number): string => {
         const percentage = (value - min) / (max - min);
-        if (percentage < 0.3) return 'var(--green-9)';
-        if (percentage < 0.6) return 'var(--amber-9)';
-        return 'var(--red-9)';
+        if (percentage < 0.3) return '#10b981'; // Green for low values
+        if (percentage < 0.7) return '#f59e0b'; // Yellow for medium values
+        return '#ef4444'; // Red for high values
     };
     
     // Function to get risk score color

@@ -18,16 +18,6 @@ import { ClimateRiskInsights } from './weather/ClimateRiskInsights';
 
 const geoUrl = 'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json';
 
-// Helper function to determine weather color based on temperature
-const getWeatherColor = (tempC: number): string => {
-    if (tempC >= 35) return '#ef4444'; // Hot (red)
-    if (tempC >= 28) return '#f97316'; // Warm (orange) 
-    if (tempC >= 20) return '#facc15'; // Mild (yellow)
-    if (tempC >= 10) return '#22c55e'; // Cool (green)
-    if (tempC >= 0) return '#38bdf8';  // Cold (blue)
-    return '#6366f1'; // Very cold (indigo)
-};
-
 type Props = {
     userLocation: { lat: number; lng: number } | null;
     center: [number, number];
@@ -229,6 +219,16 @@ export function LocationMap({
                     </Box>
                     
                     <ClimateRiskInsights 
+                        climateData={climateData} 
+                        locationInfo={locationInfo} 
+                        showDetails={showDetails}
+                        setShowDetails={setShowDetails}
+                    />
+                </>
+            )}
+        </Box>
+    );
+}
                         climateData={climateData} 
                         locationInfo={locationInfo} 
                         showDetails={showDetails}

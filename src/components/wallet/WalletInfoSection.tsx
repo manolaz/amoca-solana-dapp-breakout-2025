@@ -1,14 +1,16 @@
 import React, { Suspense } from 'react';
 import { Box, Flex, Heading, Code, Text } from '@radix-ui/themes';
 import { ErrorBoundary } from 'react-error-boundary';
+// Assuming UiWalletAccount is available from wallet-standard or a similar context
+import type { UiWalletAccount } from '@wallet-standard/react'; 
 import { WalletAccountIcon } from './WalletAccountIcon';
 import { Balance } from './Balance';
 import { Spinner } from '../common/Spinner';
 import { skyBlue, golden } from '../../theme/colors';
 
 type WalletInfoSectionProps = {
-    selectedWalletAccount: any;
-    chain: any;
+    selectedWalletAccount: UiWalletAccount; // Changed from any
+    chain: string; // Changed from any
 };
 
 export function WalletInfoSection({ selectedWalletAccount, chain }: WalletInfoSectionProps) {

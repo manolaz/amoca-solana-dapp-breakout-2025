@@ -51,7 +51,7 @@ export function Nav() {
                                 <DropdownMenu.Content>
                                     <DropdownMenu.RadioGroup
                                         onValueChange={value => {
-                                            setChain(value as 'solana:${string}');
+                                            setChain(value as string); // Simplified type assertion
                                         }}
                                         value={chain}
                                     >
