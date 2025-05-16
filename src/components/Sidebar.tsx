@@ -1,4 +1,5 @@
 import { Box, Flex, Heading, Button } from '@radix-ui/themes';
+import { Link } from "react-router-dom";
 
 const SIDEBAR_WIDTH = 220;
 
@@ -36,6 +37,9 @@ export function Sidebar({ currentPage, setCurrentPage }: { currentPage: string; 
                 >
                     Insurance
                 </Button>
+                <Link to="/amoca-climate-challenge">
+                    AMOCA Climate Challenge
+                </Link>
             </Flex>
         </Box>
     );
