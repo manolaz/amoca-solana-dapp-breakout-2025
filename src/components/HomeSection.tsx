@@ -64,30 +64,32 @@ export function HomeSection() {
                     size="7"
                     align="center"
                     style={{
-                        // background: `linear-gradient(90deg, ${skyBlue} 0%, ${mintGreen} 60%, ${golden} 100%)`,
-                        // WebkitBackgroundClip: 'text',
-                        // WebkitTextFillColor: 'transparent',
-                        color: '#fff', // changed to white
-                        fontWeight: 800,
-                        letterSpacing: '-1px',
+                        color: '#fff',
+                        fontWeight: 900,
+                        letterSpacing: '-1.5px',
                         marginBottom: 8,
+                        textShadow: '0 2px 16px #38bdf8cc, 0 1px 0 #0002',
+                        fontFamily: 'Montserrat, Arial, sans-serif',
+                        fontSize: '2.8rem',
                     }}
                 >
-                    AMOCA: Decentralized Climate Parametric Insurance Dapp
+                    🌎 AMOCA: Decentralized Climate Parametric Insurance Dapp
                 </Heading>
                 <Text
                     as="p"
-                    size="4"
+                    size="5"
                     align="center"
                     style={{
                         maxWidth: 700,
                         color: '#0e374e',
-                        fontWeight: 500,
-                        marginBottom: 12,
-                        background: '#ffffffcc',
-                        borderRadius: 12,
-                        padding: '0.5rem 1rem',
-                        boxShadow: `0 1px 8px 0 ${mintGreen}22`,
+                        fontWeight: 600,
+                        marginBottom: 16,
+                        background: 'linear-gradient(90deg, #f0fdfa 0%, #e0f2fe 100%)',
+                        borderRadius: 16,
+                        padding: '0.75rem 1.25rem',
+                        boxShadow: `0 2px 12px 0 ${mintGreen}33`,
+                        fontSize: '1.25rem',
+                        lineHeight: 1.6,
                     }}
                 >
                     AMOCA is a decentralized application (dapp) built on the Solana blockchain, designed to provide
@@ -100,28 +102,31 @@ export function HomeSection() {
                     style={{
                         textAlign: 'left',
                         maxWidth: 600,
-                        background: '#f0fdfa',
-                        borderRadius: 12,
-                        padding: '1rem 1.5rem',
-                        boxShadow: `0 1px 8px 0 ${skyBlue}22`,
+                        background: 'linear-gradient(90deg, #f0fdfa 60%, #fef9c3 100%)',
+                        borderRadius: 16,
+                        padding: '1.25rem 1.75rem',
+                        boxShadow: `0 2px 12px 0 ${skyBlue}22`,
                         color: '#134e4a',
-                        fontWeight: 500,
+                        fontWeight: 600,
+                        fontSize: '1.1rem',
+                        marginBottom: 8,
+                        border: `2px solid ${mintGreen}`,
                     }}
                 >
                     <li>
-                        <b style={{ color: skyBlue }}>Parametric Insurance:</b> Automated payouts triggered by predefined climate parameters (e.g.,
+                        <b style={{ color: skyBlue }}>🌀 Parametric Insurance:</b> Automated payouts triggered by predefined climate parameters (e.g.,
                         rainfall, temperature, wind speed).
                     </li>
                     <li>
-                        <b style={{ color: mintGreen }}>Decentralized & Transparent:</b> All policies and claims are managed on-chain, ensuring
+                        <b style={{ color: mintGreen }}>🔗 Decentralized & Transparent:</b> All policies and claims are managed on-chain, ensuring
                         transparency and reducing the need for intermediaries.
                     </li>
                     <li>
-                        <b style={{ color: golden }}>Magic Block Scaleup:</b> Utilizes Magic Block technology to enhance scalability and
+                        <b style={{ color: golden }}>✨ Magic Block Scaleup:</b> Utilizes Magic Block technology to enhance scalability and
                         performance, supporting large-scale adoption.
                     </li>
                     <li>
-                        <b style={{ color: '#eab308' }}>Solana Breakout Hackathon 2025:</b> AMOCA is developed as part of the Solana Breakout
+                        <b style={{ color: '#eab308' }}>🏆 Solana Breakout Hackathon 2025:</b> AMOCA is developed as part of the Solana Breakout
                         Hackathon 2025, showcasing innovation in decentralized insurance and climate resilience.
                     </li>
                 </Box>
@@ -134,22 +139,25 @@ export function HomeSection() {
                     mb="3"
                     style={{
                         color: golden,
-                        fontWeight: 700,
-                        textShadow: `0 2px 8px ${golden}33`,
+                        fontWeight: 800,
+                        textShadow: `0 2px 8px ${golden}55`,
+                        fontSize: '2rem',
+                        letterSpacing: '-0.5px',
                     }}
                 >
-                    Workflow Overview
+                    🔄 Workflow Overview
                 </Heading>
                 <Box
                     style={{
-                        background: '#e0f2fe',
-                        padding: 16,
-                        borderRadius: 12,
+                        background: 'linear-gradient(90deg, #e0f2fe 80%, #fef9c3 100%)',
+                        padding: 20,
+                        borderRadius: 16,
                         overflowX: 'auto',
-                        border: `1.5px solid ${skyBlue}`,
+                        border: `2px solid ${skyBlue}`,
                         color: '#0e374e',
-                        fontWeight: 500,
-                        fontSize: 15,
+                        fontWeight: 600,
+                        fontSize: 16,
+                        boxShadow: `0 2px 12px 0 ${golden}22`,
                     }}
                 >
                     <MermaidDiagram>
@@ -165,29 +173,46 @@ export function HomeSection() {
                     mb="3"
                     style={{
                         color: mintGreen,
-                        fontWeight: 700,
-                        textShadow: `0 2px 8px ${mintGreen}33`,
+                        fontWeight: 800,
+                        textShadow: `0 2px 8px ${mintGreen}55`,
+                        fontSize: '2rem',
+                        letterSpacing: '-0.5px',
                     }}
                 >
-                    Unique Solana Features in AMOCA
+                    🛠️ Unique Solana Features in AMOCA
                 </Heading>
-                <Text as="p" align="center" mb="2" style={{ color: '#0e374e', fontWeight: 500 }}>
+                <Text as="p" align="center" mb="2" style={{
+                    color: '#0e374e',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    background: '#f0fdfa',
+                    borderRadius: 10,
+                    padding: '0.5rem 1rem',
+                    marginBottom: 10,
+                }}>
                     AMOCA utilizes several advanced Solana features to deliver a scalable, secure, and user-friendly
                     parametric insurance platform:
                 </Text>
-                <Box as="ul" style={{ textAlign: 'left', maxWidth: 700, margin: '0 auto' }}>
+                <Box as="ul" style={{
+                    textAlign: 'left',
+                    maxWidth: 700,
+                    margin: '0 auto',
+                    fontWeight: 600,
+                    fontSize: '1.08rem',
+                }}>
                     <li>
-                        <b style={{ color: skyBlue }}>High-Throughput, Low-Latency Transactions</b>
+                        <b style={{ color: skyBlue }}>⚡ High-Throughput, Low-Latency Transactions</b>
                         <Box
                             style={{
-                                background: '#e0f2fe',
-                                padding: 8,
-                                borderRadius: 8,
-                                marginTop: 4,
-                                border: `1.5px solid ${skyBlue}`,
+                                background: 'linear-gradient(90deg, #e0f2fe 80%, #f0fdfa 100%)',
+                                padding: 12,
+                                borderRadius: 12,
+                                marginTop: 6,
+                                border: `2px solid ${skyBlue}`,
                                 color: '#0e374e',
-                                fontWeight: 500,
-                                fontSize: 14,
+                                fontWeight: 600,
+                                fontSize: 15,
+                                boxShadow: `0 2px 8px 0 ${skyBlue}22`,
                             }}
                         >
                             <MermaidDiagram>
@@ -195,18 +220,19 @@ export function HomeSection() {
                             </MermaidDiagram>
                         </Box>
                     </li>
-                    <li style={{ marginTop: 16 }}>
-                        <b style={{ color: golden }}>Magic Block Scaleup</b>
+                    <li style={{ marginTop: 18 }}>
+                        <b style={{ color: golden }}>🪄 Magic Block Scaleup</b>
                         <Box
                             style={{
-                                background: '#fef9c3',
-                                padding: 8,
-                                borderRadius: 8,
-                                marginTop: 4,
-                                border: `1.5px solid ${golden}`,
+                                background: 'linear-gradient(90deg, #fef9c3 80%, #f0fdfa 100%)',
+                                padding: 12,
+                                borderRadius: 12,
+                                marginTop: 6,
+                                border: `2px solid ${golden}`,
                                 color: '#92400e',
-                                fontWeight: 500,
-                                fontSize: 14,
+                                fontWeight: 600,
+                                fontSize: 15,
+                                boxShadow: `0 2px 8px 0 ${golden}22`,
                             }}
                         >
                             <MermaidDiagram>
@@ -214,18 +240,19 @@ export function HomeSection() {
                             </MermaidDiagram>
                         </Box>
                     </li>
-                    <li style={{ marginTop: 16 }}>
-                        <b style={{ color: mintGreen }}>Composability & Wallet Integration</b>
+                    <li style={{ marginTop: 18 }}>
+                        <b style={{ color: mintGreen }}>🧩 Composability & Wallet Integration</b>
                         <Box
                             style={{
-                                background: '#e0f2fe',
-                                padding: 8,
-                                borderRadius: 8,
-                                marginTop: 4,
-                                border: `1.5px solid ${skyBlue}`,
+                                background: 'linear-gradient(90deg, #e0f2fe 80%, #f0fdfa 100%)',
+                                padding: 12,
+                                borderRadius: 12,
+                                marginTop: 6,
+                                border: `2px solid ${skyBlue}`,
                                 color: '#0e374e',
-                                fontWeight: 500,
-                                fontSize: 14,
+                                fontWeight: 600,
+                                fontSize: 15,
+                                boxShadow: `0 2px 8px 0 ${mintGreen}22`,
                             }}
                         >
                             <MermaidDiagram>
@@ -237,21 +264,23 @@ export function HomeSection() {
             </Box>
             <Box mt="7">
                 <Heading as="h2" size="5" align="center" mb="3">
-                    AMOCA: Decentralized Climate Insurance Platform
+                    🏛️ AMOCA: Decentralized Climate Insurance Platform
                 </Heading>
                 <Text
                     as="p"
-                    size="4"
+                    size="5"
                     align="center"
                     style={{
                         maxWidth: 700,
                         color: '#0e374e',
-                        fontWeight: 500,
-                        marginBottom: 12,
-                        background: '#ffffffcc',
-                        borderRadius: 12,
-                        padding: '0.5rem 1rem',
-                        boxShadow: `0 1px 8px 0 ${mintGreen}22`,
+                        fontWeight: 600,
+                        marginBottom: 16,
+                        background: 'linear-gradient(90deg, #f0fdfa 0%, #e0f2fe 100%)',
+                        borderRadius: 16,
+                        padding: '0.75rem 1.25rem',
+                        boxShadow: `0 2px 12px 0 ${mintGreen}33`,
+                        fontSize: '1.25rem',
+                        lineHeight: 1.6,
                     }}
                 >
                     AMOCA is building a decentralized climate insurance platform that provides affordable protection against
@@ -260,41 +289,73 @@ export function HomeSection() {
                 </Text>
             </Box>
             <Box mt="6">
-                <Heading as="h3" size="3">Key Features</Heading>
-                <ul>
-                    <li><Text><strong>Decentralized Insurance:</strong> Truly peer-to-peer protection against climate risks</Text></li>
-                    <li><Text><strong>Blockchain-Powered:</strong> Built on Solana and Sui for speed, reliability, transparency</Text></li>
-                    <li><Text><strong>Instant Payouts:</strong> Automated claim processing triggered by verified weather data</Text></li>
-                    <li><Text><strong>Affordable Protection:</strong> Lower costs through smart contract efficiency</Text></li>
-                    <li><Text><strong>Real-time Data Integration:</strong> Utilizes MagicBlock's high-performance engine</Text></li>
+                <Heading as="h3" size="3" style={{fontWeight: 700, color: skyBlue, fontSize: '1.5rem'}}>🌟 Key Features</Heading>
+                <ul style={{
+                    background: 'linear-gradient(90deg, #f0fdfa 60%, #e0f2fe 100%)',
+                    borderRadius: 14,
+                    padding: '1rem 1.5rem',
+                    fontWeight: 600,
+                    fontSize: '1.08rem',
+                    boxShadow: `0 1px 8px 0 ${skyBlue}22`,
+                    marginBottom: 8,
+                }}>
+                    <li><Text><strong>🤝 Decentralized Insurance:</strong> Truly peer-to-peer protection against climate risks</Text></li>
+                    <li><Text><strong>⛓️ Blockchain-Powered:</strong> Built on Solana and Sui for speed, reliability, transparency</Text></li>
+                    <li><Text><strong>⚡ Instant Payouts:</strong> Automated claim processing triggered by verified weather data</Text></li>
+                    <li><Text><strong>💸 Affordable Protection:</strong> Lower costs through smart contract efficiency</Text></li>
+                    <li><Text><strong>📡 Real-time Data Integration:</strong> Utilizes MagicBlock's high-performance engine</Text></li>
                 </ul>
             </Box>
             <Box mt="6">
-                <Heading as="h3" size="3">Technology Stack</Heading>
-                <ul>
-                    <li><Text><strong>Solana & Sui Blockchain:</strong> Fast txs, low fees, transparency, immutable records</Text></li>
-                    <li><Text><strong>Switchboard Oracle:</strong> Decentralized feeds, cross-chain, on-demand updates, randomness</Text></li>
-                    <li><Text><strong>MagicBlock Engine:</strong> Ephemeral rollup on SVM for 10 ms state transitions, gasless txs</Text></li>
+                <Heading as="h3" size="3" style={{fontWeight: 700, color: mintGreen, fontSize: '1.5rem'}}>🧑‍💻 Technology Stack</Heading>
+                <ul style={{
+                    background: 'linear-gradient(90deg, #e0f2fe 60%, #f0fdfa 100%)',
+                    borderRadius: 14,
+                    padding: '1rem 1.5rem',
+                    fontWeight: 600,
+                    fontSize: '1.08rem',
+                    boxShadow: `0 1px 8px 0 ${mintGreen}22`,
+                    marginBottom: 8,
+                }}>
+                    <li><Text><strong>⚡ Solana & Sui Blockchain:</strong> Fast txs, low fees, transparency, immutable records</Text></li>
+                    <li><Text><strong>🔮 Switchboard Oracle:</strong> Decentralized feeds, cross-chain, on-demand updates, randomness</Text></li>
+                    <li><Text><strong>🪄 MagicBlock Engine:</strong> Ephemeral rollup on SVM for 10 ms state transitions, gasless txs</Text></li>
                 </ul>
             </Box>
             <Box mt="6">
-                <Heading as="h3" size="3">How AMOCA Works</Heading>
-                <ul>
-                    <li><Text>Data Collection: Verified real-time climate/weather data via oracle networks</Text></li>
-                    <li><Text>Smart Contracts: Policies encoded on Solana/Sui</Text></li>
-                    <li><Text>Risk Assessment: AI-driven risk models set premiums based on location data</Text></li>
-                    <li><Text>Automated Triggers: Predefined events auto-execute contracts</Text></li>
-                    <li><Text>Instant Payout: Claims settled immediately without manual processing</Text></li>
+                <Heading as="h3" size="3" style={{fontWeight: 700, color: golden, fontSize: '1.5rem'}}>🛡️ How AMOCA Works</Heading>
+                <ul style={{
+                    background: 'linear-gradient(90deg, #fef9c3 60%, #f0fdfa 100%)',
+                    borderRadius: 14,
+                    padding: '1rem 1.5rem',
+                    fontWeight: 600,
+                    fontSize: '1.08rem',
+                    boxShadow: `0 1px 8px 0 ${golden}22`,
+                    marginBottom: 8,
+                }}>
+                    <li><Text>📊 <strong>Data Collection:</strong> Verified real-time climate/weather data via oracle networks</Text></li>
+                    <li><Text>📜 <strong>Smart Contracts:</strong> Policies encoded on Solana/Sui</Text></li>
+                    <li><Text>🧠 <strong>Risk Assessment:</strong> AI-driven risk models set premiums based on location data</Text></li>
+                    <li><Text>⏱️ <strong>Automated Triggers:</strong> Predefined events auto-execute contracts</Text></li>
+                    <li><Text>💰 <strong>Instant Payout:</strong> Claims settled immediately without manual processing</Text></li>
                 </ul>
             </Box>
             <Box mt="6">
-                <Heading as="h3" size="3">Benefits for Users</Heading>
-                <ul>
-                    <li><Text>No paperwork or lengthy claims</Text></li>
-                    <li><Text>Transparent terms</Text></li>
-                    <li><Text>Lower premiums via reduced ops costs</Text></li>
-                    <li><Text>Immediate liquidity when disaster strikes</Text></li>
-                    <li><Text>Coverage for previously uninsurable risks</Text></li>
+                <Heading as="h3" size="3" style={{fontWeight: 700, color: '#0e374e', fontSize: '1.5rem'}}>🎁 Benefits for Users</Heading>
+                <ul style={{
+                    background: 'linear-gradient(90deg, #e0f2fe 60%, #f0fdfa 100%)',
+                    borderRadius: 14,
+                    padding: '1rem 1.5rem',
+                    fontWeight: 600,
+                    fontSize: '1.08rem',
+                    boxShadow: `0 1px 8px 0 ${skyBlue}22`,
+                    marginBottom: 8,
+                }}>
+                    <li><Text>📝 No paperwork or lengthy claims</Text></li>
+                    <li><Text>🔍 Transparent terms</Text></li>
+                    <li><Text>💲 Lower premiums via reduced ops costs</Text></li>
+                    <li><Text>💧 Immediate liquidity when disaster strikes</Text></li>
+                    <li><Text>🌱 Coverage for previously uninsurable risks</Text></li>
                 </ul>
             </Box>
         </Box>
