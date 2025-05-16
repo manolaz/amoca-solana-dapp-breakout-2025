@@ -16,7 +16,7 @@ export function HomePage() {
       {/* AMOCA Mascot */}
       <Box
         as="img"
-        src="/BLUE/a2.svg"
+        src="public/BLUE/a2.svg"
         alt="AMOCA Climate Guardian"
         style={{ display: 'block', margin: '16px auto', width: 150, height: 'auto' }}
       />
