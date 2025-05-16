@@ -1,122 +1,122 @@
-import { Box, Text, Heading, Flex, Card } from '@radix-ui/themes';
-import { ParamDef } from './types';
+import { Box, Card, Flex, Separator, Slider, Text } from '@radix-ui/themes';
+import { useMemo } from 'react';
+import { RiskParam } from './types';
+
+// Extended param type including the risk it belongs to
+interface ExtendedParam extends RiskParam {
+  riskName: string;
+  riskId: string;
+}
 
 interface RiskParametersProps {
-    params: ParamDef[];
-    paramValues: Record<string, number>;
-    onParamChange: (id: string, value: number) => void;
-    riskScore: number;
+  params: ExtendedParam[];
+  paramValues: Record<string, number>;
+  onParamChange: (id: string, value: number) => void;
+  riskScore: number;
+  selectedRiskId: string;
 }
 
 export function RiskParameters({
-    params,
-    paramValues,
-    onParamChange,
-    riskScore
+  params,
+  paramValues,
+  onParamChange,
+  riskScore,
+  selectedRiskId,
 }: RiskParametersProps) {
-    // Function to get appropriate emoji based on parameter ID
-    const getParamEmoji = (id: string): string => {
-        switch (id) {
-            case 'freq': return '🔄';
-            case 'coastVuln': return '🌊';
-            case 'rainfall': return '🌧️';
-            case 'drainage': return '🚿';
-            case 'duration': return '⏱️';
-            case 'severity': return '📊';
-            case 'temp': return '🌡️';
-            case 'slope': return '⛰️';
-            default: return '🔧';
-        }
-    };
+  // Group parameters by risk type
+  const groupedParams = useMemo(() => {
+    const groups: Record<string, { riskName: string; params: ExtendedParam[] }> = {};
     
-    // Function to get color based on parameter value percentage
-    const getValueColor = (value: number, min: number, max: number): string => {
-        const percentage = (value - min) / (max - min);
-        if (percentage < 0.3) return '#10b981'; // Green for low values
-        if (percentage < 0.7) return '#f59e0b'; // Yellow for medium values
-        return '#ef4444'; // Red for high values
-    };
+    params.forEach(param => {
+      if (!groups[param.riskId]) {
+        groups[param.riskId] = {
+          riskName: param.riskName,
+          params: []
+        };
+      }
+      groups[param.riskId].params.push(param);
+    });
     
-    // Function to get risk score color
-    const getRiskScoreColor = (score: number): string => {
-        if (score < 30) return 'var(--green-9)';
-        if (score < 70) return 'var(--amber-9)';
-        return 'var(--red-9)';
-    };
+    return groups;
+  }, [params]);
 
-    return (
-        <Box mb="4">
-            <Heading size="4" mb="3" style={{ textAlign: 'center' }}>
-                🎛️ Adjust Risk Parameters 🎛️
-            </Heading>
-            
-            <Flex direction="column" gap="3">
-                {params.map(p => (
-                    <Card 
-                        key={p.id} 
-                        style={{ 
-                            background: 'var(--gray-2)',
-                            borderRadius: '10px',
-                            padding: '16px',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-                        }}
-                    >
-                        <Flex gap="3" align="center" mb="2">
-                            <Box style={{ 
-                                width: '40px', 
-                                height: '40px', 
-                                borderRadius: '50%',
-                                background: 'var(--accent-3)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '20px'
-                            }}>
-                                {getParamEmoji(p.id)}
-                            </Box>
-                            <Box style={{ flex: 1 }}>
-                                <Flex justify="between" align="baseline">
-                                    <Text weight="bold">{p.label}</Text>
-                                    <Text 
-                                        size="5" 
-                                        weight="bold" 
-                                        style={{ 
-                                            color: getValueColor(paramValues[p.id], p.min, p.max),
-                                            fontVariantNumeric: 'tabular-nums'
-                                        }}
-                                    >
-                                        {paramValues[p.id]}
-                                    </Text>
-                                </Flex>
-                                <Text size="1" color="gray" mt="1">{p.description}</Text>
-                            </Box>
-                        </Flex>
-                        
-                        {/* Custom styled slider container */}
-                        <Box style={{ position: 'relative', padding: '8px 0' }}>
-                            <Box style={{ 
-                                height: '8px', 
-                                background: 'linear-gradient(to right, var(--green-5), var(--amber-5), var(--red-5))',
-                                borderRadius: '4px'
-                            }} />
-                            <input
-                                type="range"
-                                min={p.min}
-                                max={p.max}
-                                step={p.step}
-                                value={paramValues[p.id] || 0}
-                                onChange={e => onParamChange(p.id, Number(e.target.value))}
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    opacity: 0.5,
-                                    cursor: 'pointer',
-                                }}
-                            />
-                        </Box>
+  // Get risk name for display
+  const getScoreColor = (score: number) => {
+    if (score < 33) return 'var(--green-9)';
+    if (score < 66) return 'var(--orange-9)';
+    return 'var(--red-9)';
+  };
+
+  return (
+    <Box my="4">
+      <Flex justify="between" align="center" mb="2">
+        <Text size="5" weight="bold">Risk Parameters</Text>
+        <Box>
+          <Text 
+            size="5" 
+            weight="bold" 
+            style={{ color: getScoreColor(riskScore) }}
+          >
+            Risk Score: {riskScore}
+          </Text>
+        </Box>
+      </Flex>
+      
+      {/* Display all parameters, grouped by risk type */}
+      {Object.entries(groupedParams).map(([riskId, group]) => (
+        <Card 
+          key={riskId} 
+          mb="3" 
+          style={{
+            boxShadow: selectedRiskId === riskId ? '0 0 0 2px var(--accent-9)' : undefined,
+            opacity: selectedRiskId === riskId ? 1 : 0.8,
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <Text 
+            as="h3" 
+            size="4" 
+            weight="bold" 
+            mb="2"
+            style={{ 
+              color: selectedRiskId === riskId ? 'var(--accent-9)' : undefined 
+            }}
+          >
+            {group.riskName} Parameters
+            {selectedRiskId === riskId && (
+              <Text as="span" size="2" ml="2" style={{ color: 'var(--accent-9)' }}>
+                (Selected)
+              </Text>
+            )}
+          </Text>
+          
+          <Separator size="4" mb="3" />
+          
+          <Box>
+            {group.params.map((param) => (
+              <Box key={param.id} mb="4">
+                <Flex justify="between" mb="1">
+                  <Text weight="medium">{param.label}</Text>
+                  <Text>{paramValues[param.id]}</Text>
+                </Flex>
+                <Slider 
+                  value={[paramValues[param.id]]}
+                  onValueChange={(values) => onParamChange(param.id, values[0])}
+                  min={param.min}
+                  max={param.max}
+                  step={param.step}
+                />
+                <Text size="1" color="gray" style={{ marginTop: 4 }}>
+                  {param.description}
+                </Text>
+              </Box>
+            ))}
+          </Box>
+        </Card>
+      ))}
+    </Box>
+  );
+}
                         
                         {/* Min/Max labels */}
                         <Flex justify="between" mt="1">

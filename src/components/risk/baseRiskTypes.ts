@@ -29,7 +29,7 @@ export const baseRiskTypes: RiskType[] = [
             { id: 'rainfall', label: 'Heavy Rainfall Frequency', min: 0, max: 10, step: 1, defaultValue: 8,
               description: 'Days of heavy rainfall per year' },
             { id: 'elevation', label: 'Elevation', min: 0, max: 100, step: 1, defaultValue: 5,
-              description: 'Elevation above sea level in meters' },
+              description: 'Elevation above sea level in meters (lower values = higher risk)' },
         ],
     },
     {

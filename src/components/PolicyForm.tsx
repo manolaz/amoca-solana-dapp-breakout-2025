@@ -75,6 +75,21 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
         if (isCoastalLocation(locationInfo.lat, locationInfo.lng)) {
             risk.riskLevel = 'High Risk';
             risk.description = `${locationInfo.city} is a coastal area with increased vulnerability to flooding.`;
+            
+            // Set elevation to a lower value for coastal locations (higher risk)
+            const elevationParam = risk.params.find(p => p.id === 'elevation');
+            if (elevationParam) {
+                elevationParam.defaultValue = 3; // Lower elevation for coastal areas
+                elevationParam.description = 'Elevation above sea level in meters (lower values = higher risk)';
+            }
+        }
+        
+        // Elevation is inversely related to flood risk
+        // If we have actual elevation data, we could use it here
+        // For now, adjust description to make the inverse relationship clear
+        const elevationParam = risk.params.find(p => p.id === 'elevation');
+        if (elevationParam) {
+            elevationParam.description = 'Elevation above sea level in meters (lower values = higher risk)';
         }
     }
     
@@ -113,16 +128,23 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
 
     const selectedRisk = riskTypes.find(r => r.id === selectedRiskTypeId) || riskTypes[0];
 
-    // Initialize parameters when risk type changes
+    // Initialize parameters when risk types change
     useEffect(() => {
-        if (!selectedRisk) return;
-        
         const init: Record<string, number> = {};
-        selectedRisk.params.forEach(p => init[p.id] = p.defaultValue);
+        
+        // Initialize parameters for ALL risk types
+        riskTypes.forEach(riskType => {
+            riskType.params.forEach(p => {
+                if (!(p.id in init)) {
+                    init[p.id] = p.defaultValue;
+                }
+            });
+        });
+        
         setParamValues(init);
-    }, [selectedRiskTypeId, selectedRisk]);
+    }, [riskTypes]);
 
-    // Calculate risk score
+    // Calculate risk score for the selected risk type
     const riskScore = useMemo(() => {
         if (!selectedRisk) return 50;
         
@@ -214,6 +236,19 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
         setPreviewSVG(svg);
     }
 
+    // Get all parameters from all risk types
+    const allRiskParams = useMemo(() => {
+        const allParams = [];
+        for (const risk of riskTypes) {
+            allParams.push(...risk.params.map(param => ({
+                ...param,
+                riskName: risk.name,
+                riskId: risk.id
+            })));
+        }
+        return allParams;
+    }, [riskTypes]);
+
     return (
         <>
             {/* Certificate Preview Modal */}
@@ -282,11 +317,13 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
                 {/* Hidden input to store the selected risk type value for form submission */}
                 {selectedRiskTypeId && <input type="hidden" name="riskType" value={selectedRiskTypeId} />}
 
+                {/* Pass all parameters instead of just the selected risk parameters */}
                 <RiskParameters 
-                    params={selectedRisk.params}
+                    params={allRiskParams}
                     paramValues={paramValues}
                     onParamChange={handleParamChange}
                     riskScore={riskScore}
+                    selectedRiskId={selectedRiskTypeId}
                 />
 
                 <CoverageForm
