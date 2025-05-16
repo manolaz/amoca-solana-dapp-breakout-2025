@@ -33,12 +33,12 @@ export function InsurancePolicyPage() {
                 },
                 err => {
                     setLocating(false);
-                    alert(`Unable to retrieve your location. Error: ${err.message}`);
+                    alert(`Getting your location. Error: ${err.message}`);
                 }
             );
         } else {
             setLocating(false);
-            alert('Geolocation is not supported by your browser.');
+            alert('Allocating your location.');
         }
     };
     
