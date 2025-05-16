@@ -16,43 +16,56 @@ export function QuoteDetails({
     return (
         <Card
             style={{
-                backgroundColor: 'var(--gray-1)',
-                padding: 'var(--space-4)',
-                borderRadius: '12px',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.08)'
+                background: 'linear-gradient(135deg, var(--gray-1) 70%, var(--cyan-1) 100%)',
+                padding: 'var(--space-5)',
+                borderRadius: '18px',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+                border: '1.5px solid var(--gray-4)',
+                maxWidth: 700,
+                margin: '0 auto'
             }}
         >
-            <Heading size="3" mb="3" style={{ textAlign: 'center', color: 'var(--gray-12)' }}>
+            <Heading size="3" mb="4" style={{ textAlign: 'center', color: 'var(--gray-12)', letterSpacing: 1 }}>
                 ✨ Insurance Quote Details ✨
             </Heading>
             
             {/* Featured coverage amount - prominently displayed */}
             <Card style={{ 
-                backgroundColor: 'var(--green-4)',
-                padding: '18px',
-                borderRadius: '10px',
+                background: 'linear-gradient(90deg, var(--green-4) 70%, var(--green-2) 100%)',
+                padding: '22px',
+                borderRadius: '14px',
                 textAlign: 'center',
-                marginBottom: '16px',
-                boxShadow: '0 4px 12px rgba(0,120,0,0.1)'
-            }}>
+                marginBottom: '22px',
+                boxShadow: '0 6px 18px rgba(0,120,0,0.10)',
+                border: '1.5px solid var(--green-6)',
+                transition: 'transform 0.15s',
+                cursor: 'pointer'
+            }}
+            tabIndex={0}
+            onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.025)')}
+            onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+            >
                 <Flex direction="column" align="center" justify="center">
-                    <Text size="2" weight="bold" mb="1" style={{ color: 'var(--green-11)' }}>COVERAGE AMOUNT</Text>
-                    <Text size="7" weight="bold" style={{ color: 'var(--green-12)' }}>💰 {coverage} SOL</Text>
+                    <Text size="2" weight="bold" mb="1" style={{ color: 'var(--green-11)', letterSpacing: 0.5 }}>COVERAGE AMOUNT</Text>
+                    <Text size="7" weight="bold" style={{ color: 'var(--green-12)', textShadow: '0 2px 8px var(--green-4)' }}>💰 {coverage} SOL</Text>
                     <Text size="2" style={{ color: 'var(--green-11)' }}>Potential Payout</Text>
                 </Flex>
             </Card>
             
-            <Flex direction="row" gap="3" wrap="wrap" mb="4">
+            <Flex direction="row" gap="4" wrap="wrap" mb="5" justify="center">
                 <Card style={{ 
-                    flex: '1 1 120px', 
-                    backgroundColor: 'var(--cyan-3)', 
-                    padding: '12px',
-                    borderRadius: '8px',
+                    flex: '1 1 140px', 
+                    background: 'linear-gradient(120deg, var(--cyan-3) 80%, var(--cyan-1) 100%)', 
+                    padding: '16px',
+                    borderRadius: '10px',
                     textAlign: 'center',
-                    minWidth: '120px'
+                    minWidth: '140px',
+                    border: '1.5px solid var(--cyan-6)',
+                    transition: 'box-shadow 0.15s',
+                    boxShadow: '0 2px 8px var(--cyan-2)',
                 }}>
                     <Text size="5" mb="1">📊</Text>
-                    <Text size="2" weight="bold">Risk Score</Text>
+                    <Text size="2" weight="bold" style={{ letterSpacing: 0.2 }}>Risk Score</Text>
                     <Text size="4" weight="bold" style={{ 
                         color: 'var(--cyan-11)',
                         fontVariantNumeric: 'tabular-nums'
@@ -60,15 +73,18 @@ export function QuoteDetails({
                 </Card>
                 
                 <Card style={{ 
-                    flex: '1 1 120px',
-                    backgroundColor: 'var(--blue-3)', 
-                    padding: '12px',
-                    borderRadius: '8px',
+                    flex: '1 1 140px',
+                    background: 'linear-gradient(120deg, var(--blue-3) 80%, var(--blue-1) 100%)', 
+                    padding: '16px',
+                    borderRadius: '10px',
                     textAlign: 'center',
-                    minWidth: '120px'
+                    minWidth: '140px',
+                    border: '1.5px solid var(--blue-6)',
+                    transition: 'box-shadow 0.15s',
+                    boxShadow: '0 2px 8px var(--blue-2)',
                 }}>
                     <Text size="5" mb="1">⏱️</Text>
-                    <Text size="2" weight="bold">Duration</Text>
+                    <Text size="2" weight="bold" style={{ letterSpacing: 0.2 }}>Duration</Text>
                     <Text size="4" weight="bold" style={{ 
                         color: 'var(--blue-11)',
                         fontVariantNumeric: 'tabular-nums'
@@ -76,15 +92,18 @@ export function QuoteDetails({
                 </Card>
                 
                 <Card style={{ 
-                    flex: '1 1 120px',
-                    backgroundColor: 'var(--amber-3)', 
-                    padding: '12px',
-                    borderRadius: '8px',
+                    flex: '1 1 140px',
+                    background: 'linear-gradient(120deg, var(--amber-3) 80%, var(--amber-1) 100%)', 
+                    padding: '16px',
+                    borderRadius: '10px',
                     textAlign: 'center',
-                    minWidth: '120px'
+                    minWidth: '140px',
+                    border: '1.5px solid var(--amber-6)',
+                    transition: 'box-shadow 0.15s',
+                    boxShadow: '0 2px 8px var(--amber-2)',
                 }}>
                     <Text size="5" mb="1">💸</Text>
-                    <Text size="2" weight="bold">Premium</Text>
+                    <Text size="2" weight="bold" style={{ letterSpacing: 0.2 }}>Premium</Text>
                     <Text size="4" weight="bold" style={{ 
                         color: 'var(--amber-11)',
                         fontVariantNumeric: 'tabular-nums'
@@ -93,21 +112,23 @@ export function QuoteDetails({
             </Flex>
             
             <Card style={{ 
-                backgroundColor: 'var(--violet-2)',
-                padding: '16px',
-                borderRadius: '8px',
-                marginBottom: '16px'
+                background: 'linear-gradient(120deg, var(--violet-2) 80%, var(--gray-1) 100%)',
+                padding: '22px',
+                borderRadius: '12px',
+                marginBottom: '18px',
+                border: '1.5px solid var(--violet-5)',
+                boxShadow: '0 2px 12px 0 var(--violet-3)'
             }}>
-                <Heading size="4" mb="2" style={{ color: 'var(--violet-11)' }}>
+                <Heading size="4" mb="3" style={{ color: 'var(--violet-11)', letterSpacing: 0.5 }}>
                     🧮 Premium Breakdown
                 </Heading>
                 <Box
                     style={{
                         background: 'linear-gradient(90deg, #f0fdfa 60%, #e0f2fe 100%)',
                         border: '2px solid var(--cyan-7)',
-                        borderRadius: 12,
-                        padding: '1.25rem 1.5rem',
-                        marginBottom: 14,
+                        borderRadius: 14,
+                        padding: '1.5rem 1.75rem',
+                        marginBottom: 18,
                         boxShadow: '0 2px 12px 0 var(--cyan-4)',
                         color: 'var(--cyan-12)',
                         fontWeight: 600,
@@ -118,21 +139,22 @@ export function QuoteDetails({
                         alignItems: 'center'
                     }}
                 >
-                    <span style={{ fontSize: 28, marginBottom: 6 }}>🧩</span>
-                    <span style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, color: 'var(--cyan-11)' }}>
+                    <span style={{ fontSize: 32, marginBottom: 8 }}>🧩</span>
+                    <span style={{ fontSize: 19, fontWeight: 700, marginBottom: 6, color: 'var(--cyan-11)', letterSpacing: 0.2 }}>
                         Premium Factor Explained
                     </span>
-                    <span style={{ fontSize: 15, color: 'var(--cyan-12)', marginBottom: 6 }}>
+                    <span style={{ fontSize: 15, color: 'var(--cyan-12)', marginBottom: 8 }}>
                         <b>Premium Factor = Coverage × (Risk Score / 100)</b>
                     </span>
                     <ul style={{
                         textAlign: 'left',
                         color: 'var(--cyan-12)',
-                        fontSize: 14,
+                        fontSize: 15,
                         margin: 0,
-                        paddingLeft: 22,
+                        paddingLeft: 26,
                         listStyle: 'disc',
-                        maxWidth: 420
+                        maxWidth: 440,
+                        lineHeight: 1.7
                     }}>
                         <li>
                             <b>Coverage</b> (<span style={{ color: 'var(--green-11)' }}>💰</span>): The amount you want to insure, in SOL.
@@ -152,9 +174,10 @@ export function QuoteDetails({
                     as="ul"
                     style={{
                         margin: 0,
-                        paddingLeft: '1rem',
+                        paddingLeft: '1.2rem',
                         color: 'var(--gray-11)',
-                        fontSize: 13,
+                        fontSize: 14,
+                        lineHeight: 1.6,
                     }}
                 >
                     <li>
@@ -163,13 +186,13 @@ export function QuoteDetails({
                 </Box>
                 <Box
                     style={{
-                        background: 'linear-gradient(90deg, #e0f2fe 60%, #fef9c3 100%)',
-                        border: '2px solid var(--blue-7)',
-                        borderRadius: 12,
-                        padding: '1.25rem 1.5rem',
-                        margin: '18px 0 14px 0',
-                        boxShadow: '0 2px 12px 0 var(--blue-4)',
-                        color: 'var(--blue-12)',
+                        background: 'linear-gradient(90deg, #fef9c3 60%, #f0fdfa 100%)',
+                        border: '2px solid var(--amber-7)',
+                        borderRadius: 14,
+                        padding: '1.5rem 1.75rem',
+                        margin: '22px 0 0 0',
+                        boxShadow: '0 2px 12px 0 var(--amber-4)',
+                        color: 'var(--amber-12)',
                         fontWeight: 600,
                         fontSize: 16,
                         textAlign: 'center',
@@ -178,33 +201,37 @@ export function QuoteDetails({
                         alignItems: 'center'
                     }}
                 >
-                    <span style={{ fontSize: 28, marginBottom: 6 }}>⏱️</span>
-                    <span style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, color: 'var(--blue-11)' }}>
-                        Duration Explained
+                    <span style={{ fontSize: 32, marginBottom: 8 }}>💸</span>
+                    <span style={{ fontSize: 19, fontWeight: 700, marginBottom: 6, color: 'var(--amber-11)', letterSpacing: 0.2 }}>
+                        Total Premium Explained
                     </span>
-                    <span style={{ fontSize: 15, color: 'var(--blue-12)', marginBottom: 6 }}>
-                        <b>Duration</b> is the length of time (in months) your insurance policy will be active.
+                    <span style={{ fontSize: 15, color: 'var(--amber-12)', marginBottom: 8 }}>
+                        <b>Total Premium</b> is the final amount you pay for your insurance policy.
                     </span>
                     <ul style={{
                         textAlign: 'left',
-                        color: 'var(--blue-12)',
-                        fontSize: 14,
+                        color: 'var(--amber-12)',
+                        fontSize: 15,
                         margin: 0,
-                        paddingLeft: 22,
+                        paddingLeft: 26,
                         listStyle: 'disc',
-                        maxWidth: 420
+                        maxWidth: 440,
+                        lineHeight: 1.7
                     }}>
                         <li>
-                            <b>Flexible Terms:</b> Choose the number of months that best fits your needs.
+                            <b>Formula:</b> <b>Total Premium = Premium Factor × Duration</b>
                         </li>
                         <li>
-                            <b>Longer Duration = More Protection:</b> The longer your policy, the longer you are covered against risks.
+                            <b>Premium Factor</b> is based on your coverage and risk score.
                         </li>
                         <li>
-                            <b>Example:</b> If you select <b>6 months</b>, your coverage and premium apply for half a year.
+                            <b>Duration</b> is the number of months you want coverage for.
                         </li>
                         <li>
-                            <b>Tip:</b> Adjust duration to balance between cost and coverage period.
+                            <b>Flat Rate Model:</b> The premium is calculated simply by multiplying the factor by the duration—no hidden fees!
+                        </li>
+                        <li>
+                            <b>Example:</b> If your Premium Factor is <b>4</b> and you choose <b>6 months</b>, your Total Premium is <b>4 × 6 = 24 SOL</b>.
                         </li>
                     </ul>
                 </Box>
