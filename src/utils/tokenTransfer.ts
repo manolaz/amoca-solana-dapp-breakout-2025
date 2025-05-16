@@ -11,8 +11,8 @@ import {
     signAndSendTransactionMessageWithSigners,
 } from '@solana/kit';
 import { getTransferSolInstruction } from '@solana-program/system';
-import { Signer } from '@solana/kit';
-import { Rpc, SolanaRpcApiMainnet } from '@solana/kit';
+import type { Rpc, SolanaRpcApiMainnet } from '@solana/kit';
+import type { Signer } from '@solana/kit';
 
 // AMOCA insurance account on devnet
 export const AMOCA_ACCOUNT = "BWVdK3CTK4SCH4AfZZ4KunFGSk9eCvqDcXHX8vc5UMSD";
