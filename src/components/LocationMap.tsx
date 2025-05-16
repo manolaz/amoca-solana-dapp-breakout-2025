@@ -97,9 +97,9 @@ export function LocationMap({
     const mapCenter = userLocation 
         ? [userLocation.lng, userLocation.lat] as [number, number]
         : center;
-        
+
     const mapZoom = climateData ? 4 : zoom;
-    
+
     return (
         <Box mb="5" style={{ background: '#e0f2fe', borderRadius: 12, padding: 16 }}>
             <Flex justify="between" align="start" mb="3">
@@ -125,47 +125,28 @@ export function LocationMap({
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 position: 'relative'
             }}>
-                {/* Dynamic labels for climate conditions */}
-                {locationInfo && climateData && (
-                    <Box style={{
-                        position: 'absolute',
-                        top: 10,
-                        left: 10,
-                        zIndex: 10,
-                        background: 'rgba(255,255,255,0.8)',
-                        padding: '8px',
-                        borderRadius: '6px',
-                    }}>
-                        <Heading size="2">{locationInfo.city}, {locationInfo.country}</Heading>
-                        <Text size="1">Weather: {climateData.current_condition[0].weatherDesc[0].value}</Text>
-                    </Box>
-                )}
-                
-                <div style={{ width: '100%', height: 400 }}>
-                    <ComposableMap projection="geoMercator" width={960} height={400}>
-                        <ZoomableGroup center={mapCenter} zoom={mapZoom}>
-                            <Geographies geography={geoUrl}>
-                                {({ geographies }) =>
-                                    geographies.map(geo => (
-                                        <Geography
-                                            key={geo.rsmKey}
-                                            geography={geo}
-                                            style={{
-                                                default: { fill: '#b6e0fe', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' },
-                                                hover: { fill: '#38bdf8', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' },
-                                                pressed: { fill: '#0ea5e9', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' }
-                                            }}
-                                        />
-                                    ))
-                                }
-                            </Geographies>
-                            
-                            {/* Temperature zones */}
-                            {userLocation && climateData && (
-                                <TemperatureZones userLocation={userLocation} climateData={climateData} />
-                            )}
-                            
-                            {userLocation && (
+                {userLocation ? (
+                    <div style={{ width: '100%', height: 400 }}>
+                        <ComposableMap projection="geoMercator" width={960} height={400}>
+                            <ZoomableGroup center={mapCenter} zoom={mapZoom}>
+                                <Geographies geography={geoUrl}>
+                                    {({ geographies }) =>
+                                        geographies.map(geo => (
+                                            <Geography
+                                                key={geo.rsmKey}
+                                                geography={geo}
+                                                style={{
+                                                    default: { fill: '#b6e0fe', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' },
+                                                    hover: { fill: '#38bdf8', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' },
+                                                    pressed: { fill: '#0ea5e9', stroke: '#ffffff', strokeWidth: 0.2, outline: 'none' }
+                                                }}
+                                            />
+                                        ))
+                                    }
+                                </Geographies>
+                                {climateData && (
+                                    <TemperatureZones userLocation={userLocation} climateData={climateData} />
+                                )}
                                 <Marker coordinates={[userLocation.lng, userLocation.lat]}>
                                     <g transform="translate(-12, -24)">
                                         <path 
@@ -176,10 +157,14 @@ export function LocationMap({
                                         />
                                     </g>
                                 </Marker>
-                            )}
-                        </ZoomableGroup>
-                    </ComposableMap>
-                </div>
+                            </ZoomableGroup>
+                        </ComposableMap>
+                    </div>
+                ) : (
+                    <Text as="p" size="2" style={{ color: '#0e7490', textAlign: 'center', padding: '16px' }}>
+                        Please share your location to view the map.
+                    </Text>
+                )}
             </Card>
 
             {/* Location information display */}

@@ -69,10 +69,16 @@ export function InsurancePolicyPage() {
                 onShareLocation={handleShareLocation}
                 onLocationDetected={handleLocationDetected}
             />
-            <PolicyForm 
-                locationInfo={locationInfo}
-                weatherData={weatherData}
-            />
+            {userLocation && locationInfo && weatherData ? (
+                <PolicyForm 
+                    locationInfo={locationInfo}
+                    weatherData={weatherData}
+                />
+            ) : (
+                <Text as="p" size="2" style={{ color: '#0e7490', textAlign: 'center' }}>
+                    Please share your location to proceed with the policy configuration.
+                </Text>
+            )}
             <InsuranceFAQ />
         </Box>
     );

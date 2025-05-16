@@ -24,7 +24,7 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
     
     // Update risks based on location data
     useEffect(() => {
-        if (!locationInfo) return;
+        if (!locationInfo || !weatherData) return;
         
         // Deep clone the base risk types
         const updatedRiskTypes = JSON.parse(JSON.stringify(baseRiskTypes)) as RiskType[];
@@ -146,60 +146,68 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
 
     return (
         <form>
-            <RiskTypeSelector
-                riskTypes={riskTypes}
-                selectedRiskTypeId={selectedRiskTypeId}
-                onSelectRiskType={setSelectedRiskTypeId}
-                riskScore={riskScore}
-                locationInfo={locationInfo}
-            />
-
-            {/* Hidden input to store the selected risk type value for form submission */}
-            {selectedRiskTypeId && <input type="hidden" name="riskType" value={selectedRiskTypeId} />}
-
-            <RiskParameters 
-                params={selectedRisk.params}
-                paramValues={paramValues}
-                onParamChange={handleParamChange}
-                riskScore={riskScore}
-            />
-
-            <CoverageForm
-                coverage={coverage}
-                durationMonths={durationMonths}
-                onCoverageChange={setCoverage}
-                onDurationChange={setDurationMonths}
-            />
-
-            <QuoteDetails
-                coverage={coverage}
-                durationMonths={durationMonths}
-                riskScore={riskScore}
-                estimatedPremium={estimatedPremium}
-            />
-            
-            {/* Add claim simulator section */}
-            {weatherData && (
+            {locationInfo && weatherData ? (
                 <>
-                    <Separator size="4" my="6" />
-                    <Text as="p" size="4" weight="medium" align="center" mb="4" style={{ color: '#1e40af' }}>
-                        See how parametric insurance works in action
-                    </Text>
-                    <ClaimSimulator 
-                        weatherData={weatherData}
+                    <RiskTypeSelector
+                        riskTypes={riskTypes}
+                        selectedRiskTypeId={selectedRiskTypeId}
+                        onSelectRiskType={setSelectedRiskTypeId}
+                        riskScore={riskScore}
                         locationInfo={locationInfo}
-                        selectedRisk={selectedRisk}
-                        paramValues={paramValues}
-                        coverage={coverage}
                     />
-                </>
-            )}
 
-            <Flex mt="6" justify="center">
-                <Button type="submit" color="green" size="3">
-                    Buy Policy
-                </Button>
-            </Flex>
+                    {/* Hidden input to store the selected risk type value for form submission */}
+                    {selectedRiskTypeId && <input type="hidden" name="riskType" value={selectedRiskTypeId} />}
+
+                    <RiskParameters 
+                        params={selectedRisk.params}
+                        paramValues={paramValues}
+                        onParamChange={handleParamChange}
+                        riskScore={riskScore}
+                    />
+
+                    <CoverageForm
+                        coverage={coverage}
+                        durationMonths={durationMonths}
+                        onCoverageChange={setCoverage}
+                        onDurationChange={setDurationMonths}
+                    />
+
+                    <QuoteDetails
+                        coverage={coverage}
+                        durationMonths={durationMonths}
+                        riskScore={riskScore}
+                        estimatedPremium={estimatedPremium}
+                    />
+                    
+                    {/* Add claim simulator section */}
+                    {weatherData && (
+                        <>
+                            <Separator size="4" my="6" />
+                            <Text as="p" size="4" weight="medium" align="center" mb="4" style={{ color: '#1e40af' }}>
+                                See how parametric insurance works in action
+                            </Text>
+                            <ClaimSimulator 
+                                weatherData={weatherData}
+                                locationInfo={locationInfo}
+                                selectedRisk={selectedRisk}
+                                paramValues={paramValues}
+                                coverage={coverage}
+                            />
+                        </>
+                    )}
+
+                    <Flex mt="6" justify="center">
+                        <Button type="submit" color="green" size="3">
+                            Buy Policy
+                        </Button>
+                    </Flex>
+                </>
+            ) : (
+                <Text as="p" size="2" style={{ color: '#0e7490', textAlign: 'center' }}>
+                    Please share your location to configure your policy.
+                </Text>
+            )}
         </form>
     );
 }
