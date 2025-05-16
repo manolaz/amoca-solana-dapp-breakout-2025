@@ -219,19 +219,54 @@ export function PolicyForm() {
             </Box>
 
             {/* simulation output */}
-            <Card mt="4" mb="4" style={{ backgroundColor: 'var(--green-2)'}}>
-                <Heading size="3" mb="2" style={{ color: 'var(--green-11)'}}>Insurance Quote Simulation</Heading>
-                <Flex direction="column" gap="1">
-                    <Text as="p" size="2">
-                        <strong>Estimated Premium:</strong> {estimatedPremium} SOL
-                    </Text>
-                    <Text as="p" size="2">
-                        <strong>Potential Payout (Coverage):</strong> {potentialPayout} SOL
-                    </Text>
-                    <Text as="p" size="1" color="gray" mt="1">
-                        This is an estimate. The final premium may vary. Payout occurs if the defined trigger event for the selected risk is met during the policy period.
-                    </Text>
+            <Card
+                mt="4"
+                mb="4"
+                style={{
+                    backgroundColor: 'var(--green-2)',
+                    padding: 'var(--space-4)',
+                }}
+            >
+                <Heading size="3" mb="3" style={{ color: 'var(--green-11)' }}>
+                    Insurance Quote Details
+                </Heading>
+                <Flex justify="between" mb="3">
+                    <Box>
+                        <Text size="2" weight="bold">Risk Score</Text>
+                        <Text size="2">{riskScore} / 100</Text>
+                    </Box>
+                    <Box>
+                        <Text size="2" weight="bold">Coverage</Text>
+                        <Text size="2">{coverage} SOL</Text>
+                    </Box>
+                    <Box>
+                        <Text size="2" weight="bold">Duration</Text>
+                        <Text size="2">{durationMonths} mo</Text>
+                    </Box>
+                    <Box>
+                        <Text size="2" weight="bold">Total Premium</Text>
+                        <Text size="2">{estimatedPremium} SOL</Text>
+                    </Box>
                 </Flex>
+                <Heading size="4" mb="1" style={{ color: 'var(--green-11)' }}>
+                    Premium Breakdown
+                </Heading>
+                <Box
+                    as="ul"
+                    style={{
+                        margin: 0,
+                        paddingLeft: '1rem',
+                        color: 'var(--gray-11)',
+                        fontSize: 13,
+                    }}
+                >
+                    <li>Premium Factor = Coverage × (Risk Score / 100)</li>
+                    <li>Duration = Length of coverage period in months</li>
+                    <li>Total Premium = Premium Factor (flat rate model)</li>
+                </Box>
+                <Text size="1" color="gray" mt="2">
+                    Note: Payout of {potentialPayout} SOL occurs if the selected risk trigger is met within the policy term.
+                </Text>
             </Card>
 
             <Button type="submit" color="green" size="3">
