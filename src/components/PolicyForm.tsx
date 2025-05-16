@@ -25,77 +25,83 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
     // Update risks based on location data
     useEffect(() => {
         if (!locationInfo) return;
-        
-        // Deep clone the base risk types
+
         const updatedRiskTypes = JSON.parse(JSON.stringify(baseRiskTypes)) as RiskType[];
-        
-        // Adjust risk types based on location
+
         for (const risk of updatedRiskTypes) {
             switch (risk.id) {
                 case 'typhoon':
-                    // Increase typhoon risk for Southeast Asian countries
-                    if (['Philippines', 'Vietnam', 'Japan', 'Taiwan', 'China'].includes(locationInfo.country)) {
-                        risk.riskLevel = 'Extreme Risk';
-                        risk.description = `${locationInfo.city} is in a major typhoon path. ${risk.description}`;
-                        // Update default parameter values
-                        risk.params.find(p => p.id === 'freq')!.defaultValue = 8;
-                    } else if (['United States', 'Mexico', 'Cuba'].includes(locationInfo.country)) {
-                        risk.riskLevel = 'High Risk';
-                        risk.description = `${locationInfo.city} is vulnerable to hurricanes. ${risk.description}`;
-                    } else {
-                        risk.riskLevel = 'Low Risk';
-                        risk.description = `${locationInfo.city} is not typically affected by tropical cyclones.`;
-                    }
+                    updateTyphoonRisk(risk, locationInfo);
                     break;
-                    
                 case 'flood':
-                    // Use weather data to determine flood risk if available
-                    if (weatherData?.current_condition?.[0]?.precipMM > 5) {
-                        risk.riskLevel = 'High Risk';
-                        risk.description = `${locationInfo.city} is currently experiencing heavy precipitation, increasing flood risk.`;
-                        risk.params.find(p => p.id === 'rainfall')!.defaultValue = 
-                            Math.min(100, Math.round(parseFloat(weatherData.current_condition[0].precipMM) * 10));
-                    }
-                    
-                    // Coastal cities have higher flood risk
-                    if (isCoastalLocation(locationInfo.lat, locationInfo.lng)) {
-                        risk.riskLevel = 'High Risk';
-                        risk.description = `${locationInfo.city} is a coastal area with increased vulnerability to flooding.`;
-                    }
+                    updateFloodRisk(risk, locationInfo, weatherData);
                     break;
-                    
                 case 'drought':
-                    // Adjust drought risk based on climate data
-                    if (weatherData?.current_condition?.[0]?.humidity < 40) {
-                        risk.riskLevel = 'Medium Risk';
-                        risk.description = `${locationInfo.city} is currently experiencing dry conditions with low humidity.`;
-                    }
+                    updateDroughtRisk(risk, weatherData);
                     break;
-                    
                 case 'heatwave':
-                    // Use actual temperature data if available
-                    if (weatherData?.current_condition?.[0]?.temp_C) {
-                        const currentTemp = parseInt(weatherData.current_condition[0].temp_C);
-                        if (currentTemp > 35) {
-                            risk.riskLevel = 'High Risk';
-                            risk.description = `${locationInfo.city} is currently experiencing high temperatures (${currentTemp}°C).`;
-                            risk.params.find(p => p.id === 'temp')!.defaultValue = currentTemp;
-                        }
-                    }
+                    updateHeatwaveRisk(risk, weatherData);
                     break;
-                    
                 case 'landslide':
-                    // Mountainous regions have higher landslide risk
-                    if (isMountainousRegion(locationInfo.lat, locationInfo.lng)) {
-                        risk.riskLevel = 'High Risk';
-                        risk.description = `${locationInfo.city} is in a mountainous area with increased landslide risk.`;
-                    }
+                    updateLandslideRisk(risk, locationInfo);
                     break;
             }
         }
-        
+
         setRiskTypes(updatedRiskTypes);
     }, [locationInfo, weatherData]);
+    
+    function updateTyphoonRisk(risk: RiskType, locationInfo: LocationInfo) {
+        if (['Philippines', 'Vietnam', 'Japan', 'Taiwan', 'China'].includes(locationInfo.country)) {
+            risk.riskLevel = 'Extreme Risk';
+            risk.description = `${locationInfo.city} is in a major typhoon path. ${risk.description}`;
+            risk.params.find(p => p.id === 'freq')!.defaultValue = 8;
+        } else if (['United States', 'Mexico', 'Cuba'].includes(locationInfo.country)) {
+            risk.riskLevel = 'High Risk';
+            risk.description = `${locationInfo.city} is vulnerable to hurricanes. ${risk.description}`;
+        } else {
+            risk.riskLevel = 'Low Risk';
+            risk.description = `${locationInfo.city} is not typically affected by tropical cyclones.`;
+        }
+    }
+
+    function updateFloodRisk(risk: RiskType, locationInfo: LocationInfo, weatherData: any) {
+        if (weatherData?.current_condition?.[0]?.precipMM > 5) {
+            risk.riskLevel = 'High Risk';
+            risk.description = `${locationInfo.city} is currently experiencing heavy precipitation, increasing flood risk.`;
+            risk.params.find(p => p.id === 'rainfall')!.defaultValue = 
+                Math.min(100, Math.round(parseFloat(weatherData.current_condition[0].precipMM) * 10));
+        }
+        if (isCoastalLocation(locationInfo.lat, locationInfo.lng)) {
+            risk.riskLevel = 'High Risk';
+            risk.description = `${locationInfo.city} is a coastal area with increased vulnerability to flooding.`;
+        }
+    }
+    
+    function updateDroughtRisk(risk: RiskType, weatherData: any) {
+        if (weatherData?.current_condition?.[0]?.humidity < 40) {
+            risk.riskLevel = 'Medium Risk';
+            risk.description = `${locationInfo.city} is currently experiencing dry conditions with low humidity.`;
+        }
+    }
+    
+    function updateHeatwaveRisk(risk: RiskType, weatherData: any) {
+        if (weatherData?.current_condition?.[0]?.temp_C) {
+            const currentTemp = parseInt(weatherData.current_condition[0].temp_C);
+            if (currentTemp > 35) {
+                risk.riskLevel = 'High Risk';
+                risk.description = `${locationInfo.city} is currently experiencing high temperatures (${currentTemp}°C).`;
+                risk.params.find(p => p.id === 'temp')!.defaultValue = currentTemp;
+            }
+        }
+    }
+    
+    function updateLandslideRisk(risk: RiskType, locationInfo: LocationInfo) {
+        if (isMountainousRegion(locationInfo.lat, locationInfo.lng)) {
+            risk.riskLevel = 'High Risk';
+            risk.description = `${locationInfo.city} is in a mountainous area with increased landslide risk.`;
+        }
+    }
     
     // When risk types update, reset the selected risk type if needed
     useEffect(() => {

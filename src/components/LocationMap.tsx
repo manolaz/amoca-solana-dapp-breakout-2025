@@ -87,7 +87,10 @@ export function LocationMap({
                     const country = addr.country || '';
                     setLocationInfo({ city, country });
                 })
-                .catch(() => setLocationInfo(null))
+                .catch(() => {
+                    setLocationInfo(null);
+                    alert('Failed to retrieve location information. Please try again.');
+                })
                 .finally(() => setReverseLoading(false));
         }
     }, [userLocation]);
@@ -112,6 +115,7 @@ export function LocationMap({
                 .catch(err => {
                     console.error("Error fetching climate data:", err);
                     setClimateData(null);
+                    alert('Failed to fetch climate data. Please try again later.');
                 })
                 .finally(() => setClimateLoading(false));
         }

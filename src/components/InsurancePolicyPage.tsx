@@ -31,9 +31,9 @@ export function InsurancePolicyPage() {
                     setZoom(4); // Zoom in to country/city level
                     setLocating(false);
                 },
-                () => {
+                err => {
                     setLocating(false);
-                    alert('Unable to retrieve your location.');
+                    alert(`Unable to retrieve your location. Error: ${err.message}`);
                 }
             );
         } else {
