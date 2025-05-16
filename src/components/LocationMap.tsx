@@ -72,6 +72,7 @@ export function LocationMap({
     // new state for climate data
     const [climateData, setClimateData] = useState<WeatherData | null>(null);
     const [climateLoading, setClimateLoading] = useState(false);
+    const [climateFetched, setClimateFetched] = useState(false); // New state to track if climate data is fetched
 
     // fetch city and country once we have coords
     useEffect(() => {
@@ -97,12 +98,13 @@ export function LocationMap({
 
     // Fetch climate data once we have the city
     useEffect(() => {
-        if (locationInfo?.city) {
+        if (locationInfo?.city && !climateFetched) {
             setClimateLoading(true);
             fetch(`https://wttr.in/${encodeURIComponent(locationInfo.city)}?format=j2`)
                 .then(res => res.json())
                 .then((data: WeatherData) => {
                     setClimateData(data);
+                    setClimateFetched(true); // Mark as fetched
                     // Notify parent component of location and weather data
                     if (onLocationDetected && userLocation) {
                         onLocationDetected({
@@ -119,7 +121,7 @@ export function LocationMap({
                 })
                 .finally(() => setClimateLoading(false));
         }
-    }, [locationInfo, onLocationDetected, userLocation]);
+    }, [locationInfo, onLocationDetected, userLocation, climateFetched]);
 
     // Dynamic map properties
     const mapCenter = userLocation 
