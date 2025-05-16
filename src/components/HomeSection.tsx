@@ -234,6 +234,68 @@ export function HomeSection() {
                     </li>
                 </Box>
             </Box>
+            <Box mt="7">
+                <Heading as="h2" size="5" align="center" mb="3">
+                    AMOCA: Decentralized Climate Insurance Platform
+                </Heading>
+                <Text
+                    as="p"
+                    size="4"
+                    align="center"
+                    style={{
+                        maxWidth: 700,
+                        color: '#0e374e',
+                        fontWeight: 500,
+                        marginBottom: 12,
+                        background: '#ffffffcc',
+                        borderRadius: 12,
+                        padding: '0.5rem 1rem',
+                        boxShadow: `0 1px 8px 0 ${mintGreen}22`,
+                    }}
+                >
+                    AMOCA is building a decentralized climate insurance platform that provides affordable protection against
+                    climate-related risks. By leveraging Solana and Sui blockchains, AMOCA triggers instant, automated payouts
+                    based on verified weather data, creating a reliable safety net against climate change impacts.
+                </Text>
+            </Box>
+            <Box mt="6">
+                <Heading as="h3" size="3">Key Features</Heading>
+                <ul>
+                    <li><Text><strong>Decentralized Insurance:</strong> Truly peer-to-peer protection against climate risks</Text></li>
+                    <li><Text><strong>Blockchain-Powered:</strong> Built on Solana and Sui for speed, reliability, transparency</Text></li>
+                    <li><Text><strong>Instant Payouts:</strong> Automated claim processing triggered by verified weather data</Text></li>
+                    <li><Text><strong>Affordable Protection:</strong> Lower costs through smart contract efficiency</Text></li>
+                    <li><Text><strong>Real-time Data Integration:</strong> Utilizes MagicBlock's high-performance engine</Text></li>
+                </ul>
+            </Box>
+            <Box mt="6">
+                <Heading as="h3" size="3">Technology Stack</Heading>
+                <ul>
+                    <li><Text><strong>Solana & Sui Blockchain:</strong> Fast txs, low fees, transparency, immutable records</Text></li>
+                    <li><Text><strong>Switchboard Oracle:</strong> Decentralized feeds, cross-chain, on-demand updates, randomness</Text></li>
+                    <li><Text><strong>MagicBlock Engine:</strong> Ephemeral rollup on SVM for 10 ms state transitions, gasless txs</Text></li>
+                </ul>
+            </Box>
+            <Box mt="6">
+                <Heading as="h3" size="3">How AMOCA Works</Heading>
+                <ul>
+                    <li><Text>Data Collection: Verified real-time climate/weather data via oracle networks</Text></li>
+                    <li><Text>Smart Contracts: Policies encoded on Solana/Sui</Text></li>
+                    <li><Text>Risk Assessment: AI-driven risk models set premiums based on location data</Text></li>
+                    <li><Text>Automated Triggers: Predefined events auto-execute contracts</Text></li>
+                    <li><Text>Instant Payout: Claims settled immediately without manual processing</Text></li>
+                </ul>
+            </Box>
+            <Box mt="6">
+                <Heading as="h3" size="3">Benefits for Users</Heading>
+                <ul>
+                    <li><Text>No paperwork or lengthy claims</Text></li>
+                    <li><Text>Transparent terms</Text></li>
+                    <li><Text>Lower premiums via reduced ops costs</Text></li>
+                    <li><Text>Immediate liquidity when disaster strikes</Text></li>
+                    <li><Text>Coverage for previously uninsurable risks</Text></li>
+                </ul>
+            </Box>
         </Box>
     );
 }

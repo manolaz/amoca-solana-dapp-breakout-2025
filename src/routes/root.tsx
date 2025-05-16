@@ -36,6 +36,13 @@ function Root() {
                 <Container mx={{ initial: '3', xs: '6' }} style={{ background: '#f0fdfa', borderRadius: 24, paddingBottom: 32, marginLeft: 0 }}>
                     {currentPage === 'home' ? (
                         <>
+                            {/* AMOCA Mascot */}
+                            <Box
+                                as="img"
+                                src="/BLUE/a2.svg"
+                                alt="AMOCA Climate Guardian"
+                                style={{ display: 'block', margin: '16px auto', width: 150, height: 'auto' }}
+                            />
                             <HomeSection />
                             <Box mt="8">
                                 {selectedWalletAccount ? (

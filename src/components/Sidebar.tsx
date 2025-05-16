@@ -15,7 +15,8 @@ export function Sidebar({ currentPage, setCurrentPage }: { currentPage: string; 
                 top: 0,
             }}
         >
-            <Flex direction="column" gap="5">
+            <Flex direction="column" gap="5" align="center" py="4">
+                <img src="/solanaLogoMark.svg" alt="Solana Logo" width={48} height={48} />
                 <Box mb="6" style={{ textAlign: 'center' }}>
                     <img src="public/amoca/amoca-logo.png" alt="AMOCA Logo" width={80} style={{ margin: '0 auto' }} />
                     <Heading as="h2" size="4" mt="2" style={{ color: '#38bdf8', fontWeight: 700 }}>
