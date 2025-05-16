@@ -419,51 +419,178 @@ export function LocationMap({
                             <Text size="2" style={{ color: 'white', opacity: 0.9 }}>km/h</Text>
                         </Card>
 
-                        {/* Today's Forecast */}
+                        {/* Today's Forecast - Redesigned */}
                         <Card style={{ 
-                            background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
-                            padding: '16px', 
-                            flex: '2 1 300px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderRadius: '12px',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)',
+                            padding: '20px', 
+                            flex: '1 1 100%',
+                            borderRadius: '16px',
+                            boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
+                            position: 'relative',
+                            overflow: 'hidden'
                         }}>
-                            <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>TODAY'S FORECAST</Text>
-                            <Flex align="center" gap="3" style={{ marginTop: '8px' }}>
-                                <Box style={{ textAlign: 'center' }}>
-                                    <Text size="2" style={{ color: 'white', opacity: 0.9 }}>LOW</Text>
-                                    <Text size="6" weight="bold" style={{ color: 'white' }}>
-                                        {climateData.weather[0].mintempC}°C
-                                    </Text>
-                                    <Text size="5">❄️</Text>
-                                </Box>
-                                
-                                <Box style={{ height: '70px', width: '1px', background: 'rgba(255,255,255,0.3)' }} />
-                                
-                                <Box style={{ textAlign: 'center' }}>
-                                    <Text size="2" style={{ color: 'white', opacity: 0.9 }}>HIGH</Text>
-                                    <Text size="6" weight="bold" style={{ color: 'white' }}>
-                                        {climateData.weather[0].maxtempC}°C
-                                    </Text>
-                                    <Text size="5">🌡️</Text>
-                                </Box>
-                                
-                                <Box style={{ height: '70px', width: '1px', background: 'rgba(255,255,255,0.3)' }} />
-                                
-                                <Box style={{ textAlign: 'center' }}>
-                                    <Text size="2" style={{ color: 'white', opacity: 0.9 }}>SUNLIGHT</Text>
-                                    <Text size="6" weight="bold" style={{ color: 'white' }}>
-                                        {climateData.weather[0].sunHour}h
-                                    </Text>
-                                    <Text size="5">☀️</Text>
-                                </Box>
+                            {/* Decorative elements */}
+                            <div style={{ 
+                                position: 'absolute', 
+                                top: '-20px', 
+                                right: '-20px', 
+                                fontSize: '80px',
+                                opacity: 0.15
+                            }}>
+                                ☀️
+                            </div>
+                            <div style={{ 
+                                position: 'absolute', 
+                                bottom: '-15px', 
+                                left: '10%', 
+                                fontSize: '60px',
+                                opacity: 0.1
+                            }}>
+                                🌦️
+                            </div>
+                            
+                            {/* Header */}
+                            <Flex align="center" justify="center" gap="2" mb="4">
+                                <Text size="4" weight="bold" style={{ color: 'white', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                    🌈 Today's Forecast 🌈
+                                </Text>
                             </Flex>
+                            
+                            {/* Main content area */}
+                            <Flex direction={{ initial: 'column', sm: 'row' }} gap="4" style={{ position: 'relative', zIndex: 1 }}>
+                                {/* Temperature section */}
+                                <Card style={{ 
+                                    flex: 1, 
+                                    background: 'rgba(255,255,255,0.15)', 
+                                    borderRadius: '12px',
+                                    backdropFilter: 'blur(10px)',
+                                    padding: '16px',
+                                    border: '1px solid rgba(255,255,255,0.2)'
+                                }}>
+                                    <Heading size="3" style={{ color: 'white', textAlign: 'center', marginBottom: '12px' }}>
+                                        Temperature Range
+                                    </Heading>
+                                    
+                                    <Flex gap="3" justify="between">
+                                        <Box style={{ textAlign: 'center' }}>
+                                            <Text size="2" style={{ color: 'white', opacity: 0.8 }}>LOW TEMP</Text>
+                                            <Text size="7" weight="bold" style={{ color: 'white' }}>
+                                                {climateData.weather[0].mintempC}°
+                                            </Text>
+                                            <Text size="5">❄️</Text>
+                                            <Text size="1" style={{ color: 'white', opacity: 0.7 }}>Stay warm!</Text>
+                                        </Box>
+                                        
+                                        <Box style={{ textAlign: 'center' }}>
+                                            <Text size="2" style={{ color: 'white', opacity: 0.8 }}>HIGH TEMP</Text>
+                                            <Text size="7" weight="bold" style={{ color: 'white' }}>
+                                                {climateData.weather[0].maxtempC}°
+                                            </Text>
+                                            <Text size="5">🌡️</Text>
+                                            <Text size="1" style={{ color: 'white', opacity: 0.7 }}>Stay cool!</Text>
+                                        </Box>
+                                        
+                                        <Box style={{ textAlign: 'center' }}>
+                                            <Text size="2" style={{ color: 'white', opacity: 0.8 }}>AVG TEMP</Text>
+                                            <Text size="7" weight="bold" style={{ color: 'white' }}>
+                                                {climateData.weather[0].avgtempC}°
+                                            </Text>
+                                            <Text size="5">🌤️</Text>
+                                            <Text size="1" style={{ color: 'white', opacity: 0.7 }}>Day average</Text>
+                                        </Box>
+                                    </Flex>
+                                </Card>
+                                
+                                {/* Sun & Protection section */}
+                                <Card style={{ 
+                                    flex: 1, 
+                                    background: 'rgba(255,255,255,0.15)', 
+                                    borderRadius: '12px',
+                                    backdropFilter: 'blur(10px)',
+                                    padding: '16px',
+                                    border: '1px solid rgba(255,255,255,0.2)'
+                                }}>
+                                    <Heading size="3" style={{ color: 'white', textAlign: 'center', marginBottom: '12px' }}>
+                                        Sun & Protection
+                                    </Heading>
+                                    
+                                    <Flex gap="3" mb="3">
+                                        <Box style={{ flex: 1, textAlign: 'center', background: 'rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px' }}>
+                                            <Text size="2" style={{ color: 'white', opacity: 0.8 }}>SUNLIGHT</Text>
+                                            <Text size="6" weight="bold" style={{ color: 'white' }}>
+                                                {climateData.weather[0].sunHour}h
+                                            </Text>
+                                            <Text size="5">☀️</Text>
+                                        </Box>
+                                        
+                                        <Box style={{ flex: 1, textAlign: 'center', background: 'rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px' }}>
+                                            <Text size="2" style={{ color: 'white', opacity: 0.8 }}>UV INDEX</Text>
+                                            <Text size="6" weight="bold" style={{ color: 'white' }}>
+                                                {climateData.current_condition[0].uvIndex || "N/A"}
+                                            </Text>
+                                            <Text size="5">🕶️</Text>
+                                        </Box>
+                                    </Flex>
+                                    
+                                    <Card style={{ background: 'rgba(255, 236, 179, 0.3)', padding: '10px', borderRadius: '8px' }}>
+                                        <Heading size="1" style={{ color: 'white', marginBottom: '4px' }}>
+                                            🛡️ Weather Protection Tips:
+                                        </Heading>
+                                        <Box>
+                                            <Text as="p" size="1" style={{ color: 'white', margin: '2px 0' }}>
+                                                • {parseInt(climateData.weather[0].maxtempC) > 30 ? '🥵 Heat protection: Stay hydrated, seek shade' : 
+                                                  parseInt(climateData.weather[0].mintempC) < 10 ? '🧣 Cold protection: Layer clothing, limit exposure' :
+                                                  '👕 Moderate temperature: Comfortable conditions'}
+                                            </Text>
+                                            <Text as="p" size="1" style={{ color: 'white', margin: '2px 0' }}>
+                                                • {parseInt(climateData.current_condition[0].uvIndex) > 7 ? '🧴 High UV: Apply SPF50+ sunscreen regularly' :
+                                                  parseInt(climateData.current_condition[0].uvIndex) > 3 ? '🧢 Moderate UV: Wear hat and sunglasses' :
+                                                  '✅ Low UV: Basic sun protection advised'}
+                                            </Text>
+                                            <Text as="p" size="1" style={{ color: 'white', margin: '2px 0' }}>
+                                                • {parseInt(climateData.current_condition[0].precipMM) > 5 ? '☂️ Rain expected: Bring waterproof gear' :
+                                                  '🌂 Low precipitation: Minimal rain protection needed'}
+                                            </Text>
+                                        </Box>
+                                    </Card>
+                                </Card>
+                            </Flex>
+                            
+                            {/* Climate Risk Insight */}
+                            <Card mt="3" style={{
+                                background: 'rgba(255,255,255,0.15)',
+                                backdropFilter: 'blur(10px)',
+                                borderRadius: '12px',
+                                padding: '12px',
+                                border: '1px solid rgba(255,255,255,0.2)'
+                            }}>
+                                <Flex align="center" gap="2" mb="1">
+                                    <Text size="3" weight="bold" style={{ color: 'white' }}>
+                                        🔍 Climate Risk Insights
+                                    </Text>
+                                    <Box style={{ 
+                                        background: getWeatherColor(parseInt(climateData.current_condition[0].temp_C)), 
+                                        borderRadius: '4px',
+                                        padding: '2px 8px',
+                                    }}>
+                                        <Text size="1" weight="bold" style={{ color: 'white' }}>
+                                            {parseInt(climateData.current_condition[0].temp_C) > 35 ? 'EXTREME' :
+                                             parseInt(climateData.current_condition[0].temp_C) > 30 ? 'HIGH' : 
+                                             parseInt(climateData.current_condition[0].temp_C) < 5 ? 'COLD RISK' : 'MODERATE'}
+                                        </Text>
+                                    </Box>
+                                </Flex>
+                                <Text as="p" size="2" style={{ color: 'white', margin: '4px 0' }}>
+                                    Today's conditions indicate {parseInt(climateData.current_condition[0].temp_C) > 30 ? 'increased heat-related risks' :
+                                    parseInt(climateData.current_condition[0].temp_C) < 5 ? 'potential cold exposure concerns' :
+                                    parseInt(climateData.current_condition[0].precipMM) > 10 ? 'elevated flooding potential' :
+                                    'standard climate conditions'} for this region. Our insurance packages offer protection against weather-related damages and health impacts.
+                                </Text>
+                                <Text size="1" style={{ color: 'white', opacity: 0.7, marginTop: '4px' }}>
+                                    Based on historical data and current trends in {locationInfo?.city || 'your region'}
+                                </Text>
+                            </Card>
                         </Card>
-                    </Flex>
-                </Box>
             )}
         </Box>
     );
