@@ -72,6 +72,8 @@ export function LocationMap({
     // new state for climate data
     const [climateData, setClimateData] = useState<WeatherData | null>(null);
     const [climateLoading, setClimateLoading] = useState(false);
+    // Add missing state for details toggle
+    const [showDetails, setShowDetails] = useState(false);
 
     // fetch city and country once we have coords
     useEffect(() => {
@@ -589,8 +591,60 @@ export function LocationMap({
                                 <Text size="1" style={{ color: 'white', opacity: 0.7, marginTop: '4px' }}>
                                     Based on historical data and current trends in {locationInfo?.city || 'your region'}
                                 </Text>
+                                
+                                {/* Add policy details toggle button */}
+                                <Button 
+                                    mt="3" 
+                                    color="indigo" 
+                                    variant="soft" 
+                                    onClick={() => setShowDetails(!showDetails)}
+                                    style={{ width: '100%' }}
+                                >
+                                    {showDetails ? 'Hide Risk Details' : 'Show Risk Details'}
+                                </Button>
+                                
+                                {/* Conditional details section */}
+                                {showDetails && (
+                                    <Box mt="3" style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px' }}>
+                                        <Heading size="2" style={{ color: 'white', marginBottom: '8px' }}>
+                                            Climate Risk Details
+                                        </Heading>
+                                        <Flex direction="column" gap="2">
+                                            <Flex justify="between">
+                                                <Text size="2" style={{ color: 'white' }}>
+                                                    Temperature Risk Level:
+                                                </Text>
+                                                <Text size="2" weight="bold" style={{ color: 'white' }}>
+                                                    {parseInt(climateData.current_condition[0].temp_C) > 35 ? 'Severe' :
+                                                     parseInt(climateData.current_condition[0].temp_C) > 30 ? 'High' : 
+                                                     parseInt(climateData.current_condition[0].temp_C) < 5 ? 'Cold Risk' : 'Moderate'}
+                                                </Text>
+                                            </Flex>
+                                            <Flex justify="between">
+                                                <Text size="2" style={{ color: 'white' }}>
+                                                    Precipitation Risk:
+                                                </Text>
+                                                <Text size="2" weight="bold" style={{ color: 'white' }}>
+                                                    {parseFloat(climateData.current_condition[0].precipMM) > 10 ? 'High' :
+                                                     parseFloat(climateData.current_condition[0].precipMM) > 5 ? 'Moderate' : 'Low'}
+                                                </Text>
+                                            </Flex>
+                                            <Flex justify="between">
+                                                <Text size="2" style={{ color: 'white' }}>
+                                                    Wind Risk:
+                                                </Text>
+                                                <Text size="2" weight="bold" style={{ color: 'white' }}>
+                                                    {parseInt(climateData.current_condition[0].windspeedKmph) > 40 ? 'High' :
+                                                     parseInt(climateData.current_condition[0].windspeedKmph) > 20 ? 'Moderate' : 'Low'}
+                                                </Text>
+                                            </Flex>
+                                        </Flex>
+                                    </Box>
+                                )}
                             </Card>
                         </Card>
+                    </Flex>
+                </Box>
             )}
         </Box>
     );
