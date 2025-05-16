@@ -42,16 +42,3 @@ export function TemperatureZones({ userLocation, climateData }: TemperatureZones
         </>
     );
 }
-                <Line 
-                    key={i}
-                    coordinates={zone.coords}
-                    stroke={zone.color}
-                    strokeWidth={4}
-                    strokeLinecap="round"
-                    fill={zone.color}
-                    fillOpacity={zone.opacity}
-                />
-            ))}
-        </>
-    );
-}
