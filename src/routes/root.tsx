@@ -16,10 +16,7 @@ import { InsurancePolicyPage } from '../components/InsurancePolicyPage';
 import { Sidebar } from '../components/Sidebar';
 import { FeaturesSection } from '../components/FeaturesSection';
 import { WalletInfoSection } from '../components/wallet/WalletInfoSection';
-
-const skyBlue = '#38bdf8';
-const mintGreen = '#6ee7b7';
-const golden = '#fbbf24';
+import { skyBlue, mintGreen, golden } from '../theme/colors';
 
 const SIDEBAR_WIDTH = 220;
 
@@ -31,6 +28,7 @@ function Root() {
         chain,
         selectedWalletAccount && getUiWalletAccountStorageKey(selectedWalletAccount),
     ].filter(Boolean);
+    
     return (
         <Flex>
             <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -66,7 +64,7 @@ function Root() {
                             </Box>
                         </>
                     ) : (
-                        <InsurancePolicyPage />
+                        <InsurancePolicyPage walletAccount={selectedWalletAccount} />
                     )}
                 </Container>
             </Box>

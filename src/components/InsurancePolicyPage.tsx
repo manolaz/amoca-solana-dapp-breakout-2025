@@ -1,5 +1,6 @@
 import { Box, Container, Flex, Heading, Text } from '@radix-ui/themes';
 import React, { useState, useEffect, useContext } from 'react';
+import type { UiWalletAccount } from '@wallet-standard/react';
 
 import { ParametricInsuranceInfo } from './ParametricInsuranceInfo';
 import { BuyPolicyGuide } from './BuyPolicyGuide';
@@ -16,7 +17,11 @@ interface LocationInfo {
     country: string;
 }
 
-export function InsurancePolicyPage() {
+type InsurancePolicyPageProps = {
+    walletAccount?: UiWalletAccount;
+};
+
+export function InsurancePolicyPage({ walletAccount }: InsurancePolicyPageProps) {
     // Get selected wallet account from context
     const [selectedWalletAccount] = useContext(SelectedWalletAccountContext);
     
@@ -206,7 +211,7 @@ export function InsurancePolicyPage() {
                     <PolicyForm 
                         locationInfo={locationInfo} 
                         weatherData={weatherData}
-                        walletAccount={selectedWalletAccount}
+                        walletAccount={walletAccount}
                     />
                 </Box>
                 
