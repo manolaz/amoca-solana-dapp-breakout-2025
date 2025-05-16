@@ -158,11 +158,26 @@ export function HomeSection() {
                         fontWeight: 600,
                         fontSize: 16,
                         boxShadow: `0 2px 12px 0 ${golden}22`,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minHeight: 220,
+                        maxWidth: '100%',
+                        margin: '0 auto',
                     }}
                 >
-                    <MermaidDiagram>
-                        {workflowDiagram}
-                    </MermaidDiagram>
+                    <div style={{
+                        minWidth: 320,
+                        maxWidth: '100%',
+                        overflowX: 'auto',
+                        padding: 4,
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}>
+                        <MermaidDiagram>
+                            {workflowDiagram}
+                        </MermaidDiagram>
+                    </div>
                 </Box>
             </Box>
             <Box mt="7">
