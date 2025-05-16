@@ -34,7 +34,7 @@ export function Sidebar({ currentPage, setCurrentPage }: { currentPage: string; 
                     style={{ justifyContent: 'flex-start' }}
                     onClick={() => setCurrentPage('policy')}
                 >
-                    Insurance Policy
+                    Insurance
                 </Button>
             </Flex>
         </Box>
