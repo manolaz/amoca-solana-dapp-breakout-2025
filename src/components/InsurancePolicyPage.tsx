@@ -49,6 +49,8 @@ export function InsurancePolicyPage() {
     const handleLocationDetected = (info: LocationInfo, weather: any) => {
         setLocationInfo(info);
         setWeatherData(weather);
+        setZoom(4); // Adjust zoom level to focus on the detected location
+        setCenter([info.lng, info.lat]); // Center the map on the detected location
     };
 
     return (
@@ -69,7 +71,7 @@ export function InsurancePolicyPage() {
                 onShareLocation={handleShareLocation}
                 onLocationDetected={handleLocationDetected}
             />
-            {userLocation && locationInfo && weatherData ? (
+            {locationInfo && weatherData ? (
                 <PolicyForm 
                     locationInfo={locationInfo}
                     weatherData={weatherData}

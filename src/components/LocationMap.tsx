@@ -93,6 +93,13 @@ export function LocationMap({
         }
     }, [locationInfo, onLocationDetected]);
 
+    // Invoke onLocationDetected when locationInfo or climateData changes
+    useEffect(() => {
+        if (locationInfo && climateData && onLocationDetected) {
+            onLocationDetected(locationInfo, climateData);
+        }
+    }, [locationInfo, climateData, onLocationDetected]);
+
     // Dynamic map properties
     const mapCenter = userLocation 
         ? [userLocation.lng, userLocation.lat] as [number, number]
