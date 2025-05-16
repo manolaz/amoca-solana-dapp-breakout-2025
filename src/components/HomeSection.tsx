@@ -57,7 +57,7 @@ export function HomeSection() {
                         marginBottom: 8,
                     }}
                 >
-                    <img src="public/amoca/amoca-logo.png" alt="AMOCA Logo" width={140} />
+                    <img src="/amoca/amoca-logo.png" alt="AMOCA Logo" width={140} />
                 </Box>
                 <Heading
                     as="h1"
