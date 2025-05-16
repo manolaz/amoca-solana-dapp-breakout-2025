@@ -28,7 +28,8 @@
         "react-error-boundary": "6.0.0",
         "swr": "2.3.3",
         "@lightenna/react-mermaid-diagram": "1.0.17",
-        "mermaid": "11.6.0"
+        "mermaid": "11.6.0",
+        "react-simple-maps": "latest"
     },
     "devDependencies": {
         "@solana/wallet-standard-features": "^1.3.0",

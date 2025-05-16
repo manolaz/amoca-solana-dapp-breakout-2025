@@ -24,9 +24,16 @@ export function Nav() {
             top="0"
         >
             <Flex gap="4" justify="between" align="center">
-                <Box flexGrow="1">
+                <Box flexGrow="1" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <img
+                        src="public/amoca/amoca-logo.png"
+                        alt="AMOCA Logo"
+                        width={40}
+                        height={40}
+                        style={{ borderRadius: '50%', background: '#fff', boxShadow: '0 2px 8px #38bdf833' }}
+                    />
                     <Heading as="h1" size={{ initial: '4', xs: '6' }} truncate>
-                        Solana React App{' '}
+                        AMOCA Dapp{' '}
                         {setChain ? (
                             <DropdownMenu.Root>
                                 <DropdownMenu.Trigger>{currentChainBadge}</DropdownMenu.Trigger>
