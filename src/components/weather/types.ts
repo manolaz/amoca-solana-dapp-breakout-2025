@@ -10,38 +10,37 @@ export type CurrentCondition = {
     temp_F: string;
     weatherDesc: WeatherDesc[];
     humidity: string;
-    cloudcover: string;
-    FeelsLikeC: string;
-    pressure: string;
     windspeedKmph: string;
     precipMM: string;
     uvIndex: string;
-    visibility: string;
 };
 
 export type WeatherData = {
-    current_condition: CurrentCondition[];
-    nearest_area: [{ 
-        areaName: AreaInfo[];
-        country: AreaInfo[];
-        latitude: string;
-        longitude: string;
-    }];
-    weather: [{
-        maxtempC: string;
+    current_condition: Array<{
+        temp_C: string;
+        temp_F: string;
+        weatherDesc: Array<{
+            value: string;
+        }>;
+        humidity: string;
+        windspeedKmph: string;
+        precipMM: string;
+        uvIndex: string;
+    }>;
+    weather: Array<{
         mintempC: string;
+        maxtempC: string;
         avgtempC: string;
         sunHour: string;
-        date: string;
-    }];
+    }>;
 };
 
-export type LocationInfo = {
+export interface LocationInfo {
     city: string;
     country: string;
     lat: number;
     lng: number;
-};
+}
 
 // Helper functions for weather data
 export const getWeatherColor = (temp: number): string => {
@@ -68,4 +67,5 @@ export function convertToCartesian(center: {lat: number, lng: number}, radiusKm:
     // Close the loop
     points.push(points[0]);
     return points;
+}
 }

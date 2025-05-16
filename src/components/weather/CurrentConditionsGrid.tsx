@@ -1,12 +1,36 @@
 import React from 'react';
 import { Box, Card, Flex, Heading, Text } from '@radix-ui/themes';
-import { WeatherData, getWeatherColor } from './types';
+import { WeatherData } from './types';
 
-type CurrentConditionsGridProps = {
+interface CurrentConditionsGridProps {
     climateData: WeatherData;
+}
+
+// Helper function to determine weather color
+const getWeatherColor = (tempC: number): string => {
+    if (tempC >= 35) return '#ef4444'; // Hot (red)
+    if (tempC >= 28) return '#f97316'; // Warm (orange) 
+    if (tempC >= 20) return '#facc15'; // Mild (yellow)
+    if (tempC >= 10) return '#22c55e'; // Cool (green)
+    if (tempC >= 0) return '#38bdf8';  // Cold (blue)
+    return '#6366f1'; // Very cold (indigo)
 };
 
 export function CurrentConditionsGrid({ climateData }: CurrentConditionsGridProps) {
+    const currentCondition = climateData.current_condition[0];
+    const tempC = parseInt(currentCondition.temp_C);
+    
+    // Weather emoji based on conditions
+    const getWeatherEmoji = (desc: string): string => {
+        const lowercaseDesc = desc.toLowerCase();
+        if (lowercaseDesc.includes('rain')) return '🌧️';
+        if (lowercaseDesc.includes('cloud')) return '☁️';
+        if (lowercaseDesc.includes('sun') || lowercaseDesc.includes('clear')) return '☀️';
+        if (lowercaseDesc.includes('storm')) return '⛈️';
+        if (lowercaseDesc.includes('snow')) return '❄️';
+        return '🌈';
+    };
+    
     return (
         <Box mt="3">
             <Heading size="3" mb="2" style={{ color: '#0369a1' }}>
@@ -14,9 +38,9 @@ export function CurrentConditionsGrid({ climateData }: CurrentConditionsGridProp
             </Heading>
             
             <Flex gap="3" wrap="wrap">
-                {/* Temperature - Larger and more prominent */}
+                {/* Temperature */}
                 <Card style={{ 
-                    background: getWeatherColor(parseInt(climateData.current_condition[0].temp_C)),
+                    background: getWeatherColor(tempC),
                     padding: '16px', 
                     flex: '1 1 140px',
                     minHeight: '140px',
@@ -29,15 +53,15 @@ export function CurrentConditionsGrid({ climateData }: CurrentConditionsGridProp
                 }}>
                     <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>TEMPERATURE</Text>
                     <Text size="8" weight="bold" style={{ color: 'white' }}>
-                        {climateData.current_condition[0].temp_C}°C
+                        {currentCondition.temp_C}°C
                     </Text>
                     <Text size="1" style={{ color: 'white', opacity: 0.9 }}>
-                        {climateData.current_condition[0].temp_F}°F
+                        {currentCondition.temp_F}°F
                     </Text>
                     <Text size="6" style={{ marginTop: '4px' }}>
-                        {parseInt(climateData.current_condition[0].temp_C) > 30 ? '🔥' : 
-                         parseInt(climateData.current_condition[0].temp_C) > 20 ? '☀️' : 
-                         parseInt(climateData.current_condition[0].temp_C) > 10 ? '🌤️' : '❄️'}
+                        {tempC > 30 ? '🔥' : 
+                         tempC > 20 ? '☀️' : 
+                         tempC > 10 ? '🌤️' : '❄️'}
                     </Text>
                 </Card>
 
@@ -56,15 +80,10 @@ export function CurrentConditionsGrid({ climateData }: CurrentConditionsGridProp
                 }}>
                     <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>CONDITION</Text>
                     <Text size="6" style={{ marginBottom: '4px' }}>
-                        {climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('rain') ? '🌧️' :
-                         climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('cloud') ? '☁️' :
-                         climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('sun') ? '☀️' :
-                         climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('clear') ? '🌞' :
-                         climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('storm') ? '⛈️' :
-                         climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('snow') ? '❄️' : '🌈'}
+                        {getWeatherEmoji(currentCondition.weatherDesc[0].value)}
                     </Text>
                     <Text size="2" weight="bold" style={{ color: 'white', textAlign: 'center' }}>
-                        {climateData.current_condition[0].weatherDesc[0].value}
+                        {currentCondition.weatherDesc[0].value}
                     </Text>
                 </Card>
 
@@ -84,7 +103,7 @@ export function CurrentConditionsGrid({ climateData }: CurrentConditionsGridProp
                     <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>HUMIDITY</Text>
                     <Text size="6" style={{ marginBottom: '4px' }}>💧</Text>
                     <Text size="6" weight="bold" style={{ color: 'white' }}>
-                        {climateData.current_condition[0].humidity}%
+                        {currentCondition.humidity}%
                     </Text>
                 </Card>
 
@@ -104,7 +123,7 @@ export function CurrentConditionsGrid({ climateData }: CurrentConditionsGridProp
                     <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>WIND SPEED</Text>
                     <Text size="6" style={{ marginBottom: '4px' }}>🌬️</Text>
                     <Text size="6" weight="bold" style={{ color: 'white' }}>
-                        {climateData.current_condition[0].windspeedKmph}
+                        {currentCondition.windspeedKmph}
                     </Text>
                     <Text size="2" style={{ color: 'white', opacity: 0.9 }}>km/h</Text>
                 </Card>

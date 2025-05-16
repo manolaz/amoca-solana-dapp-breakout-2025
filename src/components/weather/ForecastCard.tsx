@@ -1,17 +1,18 @@
 import React from 'react';
 import { Box, Card, Flex, Heading, Text } from '@radix-ui/themes';
-import { WeatherData, getWeatherColor } from './types';
+import { WeatherData } from './types';
 
-type ForecastCardProps = {
+interface ForecastCardProps {
     climateData: WeatherData;
-};
+}
 
 export function ForecastCard({ climateData }: ForecastCardProps) {
+    const forecast = climateData.weather[0];
+    
     return (
         <Card style={{ 
             background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)',
             padding: '20px', 
-            flex: '1 1 100%',
             borderRadius: '16px',
             boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
             position: 'relative',
@@ -63,7 +64,7 @@ export function ForecastCard({ climateData }: ForecastCardProps) {
                         <Box style={{ textAlign: 'center' }}>
                             <Text size="2" style={{ color: 'white', opacity: 0.8 }}>LOW TEMP</Text>
                             <Text size="7" weight="bold" style={{ color: 'white' }}>
-                                {climateData.weather[0].mintempC}°
+                                {forecast.mintempC}°
                             </Text>
                             <Text size="5">❄️</Text>
                             <Text size="1" style={{ color: 'white', opacity: 0.7 }}>Stay warm!</Text>
@@ -72,7 +73,7 @@ export function ForecastCard({ climateData }: ForecastCardProps) {
                         <Box style={{ textAlign: 'center' }}>
                             <Text size="2" style={{ color: 'white', opacity: 0.8 }}>HIGH TEMP</Text>
                             <Text size="7" weight="bold" style={{ color: 'white' }}>
-                                {climateData.weather[0].maxtempC}°
+                                {forecast.maxtempC}°
                             </Text>
                             <Text size="5">🌡️</Text>
                             <Text size="1" style={{ color: 'white', opacity: 0.7 }}>Stay cool!</Text>
@@ -81,7 +82,7 @@ export function ForecastCard({ climateData }: ForecastCardProps) {
                         <Box style={{ textAlign: 'center' }}>
                             <Text size="2" style={{ color: 'white', opacity: 0.8 }}>AVG TEMP</Text>
                             <Text size="7" weight="bold" style={{ color: 'white' }}>
-                                {climateData.weather[0].avgtempC}°
+                                {forecast.avgtempC}°
                             </Text>
                             <Text size="5">🌤️</Text>
                             <Text size="1" style={{ color: 'white', opacity: 0.7 }}>Day average</Text>
@@ -106,7 +107,7 @@ export function ForecastCard({ climateData }: ForecastCardProps) {
                         <Box style={{ flex: 1, textAlign: 'center', background: 'rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px' }}>
                             <Text size="2" style={{ color: 'white', opacity: 0.8 }}>SUNLIGHT</Text>
                             <Text size="6" weight="bold" style={{ color: 'white' }}>
-                                {climateData.weather[0].sunHour}h
+                                {forecast.sunHour}h
                             </Text>
                             <Text size="5">☀️</Text>
                         </Box>
@@ -126,8 +127,8 @@ export function ForecastCard({ climateData }: ForecastCardProps) {
                         </Heading>
                         <Box>
                             <Text as="p" size="1" style={{ color: 'white', margin: '2px 0' }}>
-                                • {parseInt(climateData.weather[0].maxtempC) > 30 ? '🥵 Heat protection: Stay hydrated, seek shade' : 
-                                  parseInt(climateData.weather[0].mintempC) < 10 ? '🧣 Cold protection: Layer clothing, limit exposure' :
+                                • {parseInt(forecast.maxtempC) > 30 ? '🥵 Heat protection: Stay hydrated, seek shade' : 
+                                  parseInt(forecast.mintempC) < 10 ? '🧣 Cold protection: Layer clothing, limit exposure' :
                                   '👕 Moderate temperature: Comfortable conditions'}
                             </Text>
                             <Text as="p" size="1" style={{ color: 'white', margin: '2px 0' }}>
@@ -136,7 +137,7 @@ export function ForecastCard({ climateData }: ForecastCardProps) {
                                   '✅ Low UV: Basic sun protection advised'}
                             </Text>
                             <Text as="p" size="1" style={{ color: 'white', margin: '2px 0' }}>
-                                • {parseInt(climateData.current_condition[0].precipMM) > 5 ? '☂️ Rain expected: Bring waterproof gear' :
+                                • {parseFloat(climateData.current_condition[0].precipMM) > 5 ? '☂️ Rain expected: Bring waterproof gear' :
                                   '🌂 Low precipitation: Minimal rain protection needed'}
                             </Text>
                         </Box>

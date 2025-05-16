@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Text, Flex, Card } from '@radix-ui/themes';
+import { Box, Button, Text, Flex, Card, Heading } from '@radix-ui/themes';
 import {
     ComposableMap,
     Geographies,
@@ -17,6 +17,16 @@ import { ForecastCard } from './weather/ForecastCard';
 import { ClimateRiskInsights } from './weather/ClimateRiskInsights';
 
 const geoUrl = 'https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json';
+
+// Helper function to determine weather color based on temperature
+const getWeatherColor = (tempC: number): string => {
+    if (tempC >= 35) return '#ef4444'; // Hot (red)
+    if (tempC >= 28) return '#f97316'; // Warm (orange) 
+    if (tempC >= 20) return '#facc15'; // Mild (yellow)
+    if (tempC >= 10) return '#22c55e'; // Cool (green)
+    if (tempC >= 0) return '#38bdf8';  // Cold (blue)
+    return '#6366f1'; // Very cold (indigo)
+};
 
 type Props = {
     userLocation: { lat: number; lng: number } | null;
@@ -41,6 +51,8 @@ export function LocationMap({
     // State for climate data
     const [climateData, setClimateData] = useState<WeatherData | null>(null);
     const [climateLoading, setClimateLoading] = useState(false);
+    // State for details toggle
+    const [showDetails, setShowDetails] = useState(false);
 
     // Fetch city and country once we have coords
     useEffect(() => {
@@ -76,7 +88,7 @@ export function LocationMap({
                 .then((data: WeatherData) => {
                     setClimateData(data);
                     // Notify parent component of location and weather data
-                    if onLocationDetected) {
+                    if (onLocationDetected) {
                         onLocationDetected(locationInfo, data);
                     }
                 })
@@ -131,7 +143,7 @@ export function LocationMap({
                         padding: '8px',
                         borderRadius: '6px',
                     }}>
-                        <Text weight="bold">{locationInfo.city}, {locationInfo.country}</Text>
+                        <Heading size="2">{locationInfo.city}, {locationInfo.country}</Heading>
                         <Text size="1">Weather: {climateData.current_condition[0].weatherDesc[0].value}</Text>
                     </Box>
                 )}
@@ -216,29 +228,17 @@ export function LocationMap({
                         <ForecastCard climateData={climateData} />
                     </Box>
                     
-                    <ClimateRiskInsights climateData={climateData} locationInfo={locationInfo} />
+                    <ClimateRiskInsights 
+                        climateData={climateData} 
+                        locationInfo={locationInfo} 
+                        showDetails={showDetails}
+                        setShowDetails={setShowDetails}
+                    />
                 </>
             )}
         </Box>
     );
 }
-            }}>
-                {/* Dynamic labels for climate conditions */}
-                {locationInfo && climateData && (
-                    <Box style={{
-                        position: 'absolute',
-                        top: 10,
-                        left: 10,
-                        zIndex: 10,
-                        background: 'rgba(255,255,255,0.8)',
-                        padding: '8px',
-                        borderRadius: '6px',
-                    }}>
-                        <Heading size="2">{locationInfo.city}, {locationInfo.country}</Heading>
-                        <Text size="1">Weather: {climateData.current_condition[0].weatherDesc[0].value}</Text>
-                    </Box>
-                )}
-                
                 <div style={{ width: '100%', height: 400 }}>
                     <ComposableMap projection="geoMercator" width={960} height={400}>
                         <ZoomableGroup center={mapCenter} zoom={mapZoom}>

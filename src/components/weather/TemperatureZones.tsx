@@ -1,47 +1,47 @@
 import React from 'react';
-import { Line } from 'react-simple-maps';
-import { WeatherData, getWeatherColor, convertToCartesian } from './types';
+import { Circle } from 'react-simple-maps';
+import { WeatherData } from './types';
 
-type TemperatureZonesProps = {
-    userLocation: { lat: number; lng: number } | null;
-    climateData: WeatherData | null;
-};
+interface TemperatureZonesProps {
+    userLocation: { lat: number; lng: number };
+    climateData: WeatherData;
+}
 
 export function TemperatureZones({ userLocation, climateData }: TemperatureZonesProps) {
-    const tempZones = React.useMemo(() => {
-        if (!climateData || !userLocation) return [];
-        
-        const temp = parseInt(climateData.current_condition[0].temp_C);
-        const color = getWeatherColor(temp);
-        
-        // Create some approximated zones around the user location
-        return [
-            {
-                radius: 100, // km
-                color: color,
-                opacity: 0.2,
-                coords: convertToCartesian(userLocation, 100)
-            },
-            {
-                radius: 50, // km
-                color: color, 
-                opacity: 0.3,
-                coords: convertToCartesian(userLocation, 50)
-            },
-            {
-                radius: 25, // km
-                color: color,
-                opacity: 0.4, 
-                coords: convertToCartesian(userLocation, 25)
-            }
-        ];
-    }, [climateData, userLocation]);
-
-    if (!tempZones.length) return null;
-
+    // Generate temperature zone visualization
+    const tempC = parseInt(climateData.current_condition[0].temp_C);
+    
+    // Generate color based on temperature
+    const getZoneColor = (temp: number): string => {
+        if (temp >= 35) return 'rgba(239, 68, 68, 0.15)'; // Hot
+        if (temp >= 28) return 'rgba(249, 115, 22, 0.15)'; // Warm
+        if (temp >= 20) return 'rgba(250, 204, 21, 0.15)'; // Mild
+        if (temp >= 10) return 'rgba(34, 197, 94, 0.15)'; // Cool
+        if (temp >= 0) return 'rgba(56, 189, 248, 0.15)'; // Cold
+        return 'rgba(99, 102, 241, 0.15)'; // Very cold
+    };
+    
+    const zoneColor = getZoneColor(tempC);
+    
     return (
         <>
-            {tempZones.map((zone, i) => (
+            <Circle
+                center={[userLocation.lng, userLocation.lat]}
+                radius={50}
+                fill={zoneColor}
+                stroke={zoneColor.replace('0.15', '0.3')}
+                strokeWidth={2}
+            />
+            <Circle
+                center={[userLocation.lng, userLocation.lat]}
+                radius={100}
+                fill={zoneColor.replace('0.15', '0.1')}
+                stroke={zoneColor.replace('0.15', '0.2')}
+                strokeWidth={1}
+            />
+        </>
+    );
+}
                 <Line 
                     key={i}
                     coordinates={zone.coords}
