@@ -12,11 +12,41 @@ import { WalletAccountIcon } from '../components/WalletAccountIcon';
 import { ChainContext } from '../context/ChainContext';
 import { SelectedWalletAccountContext } from '../context/SelectedWalletAccountContext';
 
+import { MermaidDiagram } from '@lightenna/react-mermaid-diagram';
+
 const skyBlue = '#38bdf8';
 const mintGreen = '#6ee7b7';
 const golden = '#fbbf24';
 
 function HomeSection() {
+    const workflowDiagram = String.raw`flowchart TD
+    User[Policy Holder] -->|Buys Policy| AMOCA_Dapp[AMOCA Dapp]
+    AMOCA_Dapp -->|Requests Data| Switchboard[Switchboard Data Feed]
+    Switchboard -->|Sends Climate Data| AMOCA_Dapp
+    AMOCA_Dapp -->|Triggers| Solana_Program[Solana Program]
+    Solana_Program -->|Payout| User
+    note1[/"No need to measure real asset damages"/] --- Solana_Program`;
+
+    const txDiagram = String.raw`sequenceDiagram
+    participant User
+    participant AMOCA_UI as AMOCA UI
+    participant Solana as Solana Blockchain
+
+    User->>AMOCA_UI: Submit Policy Purchase
+    AMOCA_UI->>Solana: Send Transaction
+    Solana-->>AMOCA_UI: Confirm in <1s
+    AMOCA_UI-->>User: Policy Issued Instantly`;
+
+    const magicBlockDiagram = String.raw`graph LR
+    A[Magic Block] --> B[AMOCA Smart Contracts]
+    B --> C[Massive Parallel Processing]
+    C --> D[Scalable Insurance Operations]`;
+
+    const composabilityDiagram = String.raw`flowchart LR
+    UserWallet[User Wallet] -- Connects --> AMOCA_Dapp
+    AMOCA_Dapp -- Uses --> Solana_Kit[Solana Kit]
+    Solana_Kit -- Integrates --> Solana_Program`;
+
     return (
         <Box
             my="6"
@@ -122,7 +152,6 @@ function HomeSection() {
                     Workflow Overview
                 </Heading>
                 <Box
-                    as="pre"
                     style={{
                         background: '#e0f2fe',
                         padding: 16,
@@ -134,13 +163,9 @@ function HomeSection() {
                         fontSize: 15,
                     }}
                 >
-                    {String.raw`flowchart TD
-    User[Policy Holder] -->|Buys Policy| AMOCA_Dapp[AMOCA Dapp]
-    AMOCA_Dapp -->|Requests Data| Switchboard[Switchboard Data Feed]
-    Switchboard -->|Sends Climate Data| AMOCA_Dapp
-    AMOCA_Dapp -->|Triggers| Solana_Program[Solana Program]
-    Solana_Program -->|Payout| User
-    note1[/"No need to measure real asset damages"/] --- Solana_Program`}
+                    <MermaidDiagram>
+                        {workflowDiagram}
+                    </MermaidDiagram>
                 </Box>
             </Box>
             <Box mt="7">
@@ -165,7 +190,6 @@ function HomeSection() {
                     <li>
                         <b style={{ color: skyBlue }}>High-Throughput, Low-Latency Transactions</b>
                         <Box
-                            as="pre"
                             style={{
                                 background: '#f0fdfa',
                                 padding: 8,
@@ -177,21 +201,14 @@ function HomeSection() {
                                 fontSize: 14,
                             }}
                         >
-                            {String.raw`sequenceDiagram
-    participant User
-    participant AMOCA_UI as AMOCA UI
-    participant Solana as Solana Blockchain
-
-    User->>AMOCA_UI: Submit Policy Purchase
-    AMOCA_UI->>Solana: Send Transaction
-    Solana-->>AMOCA_UI: Confirm in <1s
-    AMOCA_UI-->>User: Policy Issued Instantly`}
+                            <MermaidDiagram>
+                                {txDiagram}
+                            </MermaidDiagram>
                         </Box>
                     </li>
                     <li style={{ marginTop: 16 }}>
                         <b style={{ color: golden }}>Magic Block Scaleup</b>
                         <Box
-                            as="pre"
                             style={{
                                 background: '#fef9c3',
                                 padding: 8,
@@ -203,16 +220,14 @@ function HomeSection() {
                                 fontSize: 14,
                             }}
                         >
-                            {String.raw`graph LR
-    A[Magic Block] --> B[AMOCA Smart Contracts]
-    B --> C[Massive Parallel Processing]
-    C --> D[Scalable Insurance Operations]`}
+                            <MermaidDiagram>
+                                {magicBlockDiagram}
+                            </MermaidDiagram>
                         </Box>
                     </li>
                     <li style={{ marginTop: 16 }}>
                         <b style={{ color: mintGreen }}>Composability & Wallet Integration</b>
                         <Box
-                            as="pre"
                             style={{
                                 background: '#e0f2fe',
                                 padding: 8,
@@ -224,10 +239,9 @@ function HomeSection() {
                                 fontSize: 14,
                             }}
                         >
-                            {String.raw`flowchart LR
-    UserWallet[User Wallet] -- Connects --> AMOCA_Dapp
-    AMOCA_Dapp -- Uses --> Solana_Kit[Solana Kit]
-    Solana_Kit -- Integrates --> Solana_Program`}
+                            <MermaidDiagram>
+                                {composabilityDiagram}
+                            </MermaidDiagram>
                         </Box>
                     </li>
                 </Box>
