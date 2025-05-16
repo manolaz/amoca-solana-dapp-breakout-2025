@@ -125,9 +125,9 @@ export function LocationMap({
     const mapCenter = userLocation 
         ? [userLocation.lng, userLocation.lat] as [number, number]
         : center;
-        
+
     const mapZoom = climateData ? 4 : zoom;
-    
+
     // Color based on temperature - create a color gradient from blue (cold) to red (hot)
     const getWeatherColor = (temp: number): string => {
         if (temp < 0) return '#0ea5e9';  // Freezing - blue
@@ -139,7 +139,7 @@ export function LocationMap({
 
     // Get temperature zones if we have climate data
     const tempZones = climateData ? getTemperatureZones() : [];
-    
+
     // Create temperature zones based on nearby locations with similar climate
     function getTemperatureZones() {
         if (!climateData || !userLocation) return [];
