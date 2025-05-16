@@ -1,4 +1,6 @@
-![AMOCA Logo](public/amoca/amoca-logo.png)
+<p align="center">
+  <img src="public/amoca/amoca-logo.png" alt="AMOCA Logo" width="180"/>
+</p>
 
 # AMOCA: Decentralized Climate Parametric Insurance Dapp
 
@@ -28,3 +30,49 @@ flowchart TD
 - AMOCA leverages a custom on-demand data feed from Switchboard to obtain climate parameters.
 - When a trigger condition is met, the Solana program automatically executes payouts to policy holders.
 - This parametric approach eliminates the need to assess actual damages to real assets.
+
+## Unique Solana Features in AMOCA
+
+AMOCA utilizes several advanced Solana features to deliver a scalable, secure, and user-friendly parametric insurance platform:
+
+### 1. High-Throughput, Low-Latency Transactions
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant AMOCA_UI as AMOCA UI
+    participant Solana as Solana Blockchain
+
+    User->>AMOCA_UI: Submit Policy Purchase
+    AMOCA_UI->>Solana: Send Transaction
+    Solana-->>AMOCA_UI: Confirm in <1s
+    AMOCA_UI-->>User: Policy Issued Instantly
+```
+
+- Solana's fast block times ensure instant policy issuance and claim settlements.
+
+### 2. Magic Block Scaleup
+
+```mermaid
+graph LR
+    A[Magic Block] --> B[AMOCA Smart Contracts]
+    B --> C[Massive Parallel Processing]
+    C --> D[Scalable Insurance Operations]
+```
+
+- Magic Block enables AMOCA to scale efficiently, handling large numbers of policies and claims in parallel.
+
+### 3. Composability & Wallet Integration
+
+```mermaid
+flowchart LR
+    UserWallet[User Wallet] -- Connects --> AMOCA_Dapp
+    AMOCA_Dapp -- Uses --> Solana_Kit[Solana Kit]
+    Solana_Kit -- Integrates --> Solana_Program
+```
+
+- Seamless wallet integration and composability with other Solana dapps and DeFi protocols.
+
+---
+
+Join us in building the future of climate risk management on Solana!
