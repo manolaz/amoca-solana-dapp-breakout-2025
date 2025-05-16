@@ -64,9 +64,10 @@ export function HomeSection() {
                     size="7"
                     align="center"
                     style={{
-                        background: `linear-gradient(90deg, ${skyBlue} 0%, ${mintGreen} 60%, ${golden} 100%)`,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
+                        // background: `linear-gradient(90deg, ${skyBlue} 0%, ${mintGreen} 60%, ${golden} 100%)`,
+                        // WebkitBackgroundClip: 'text',
+                        // WebkitTextFillColor: 'transparent',
+                        color: '#fff', // changed to white
                         fontWeight: 800,
                         letterSpacing: '-1px',
                         marginBottom: 8,
@@ -179,12 +180,12 @@ export function HomeSection() {
                         <b style={{ color: skyBlue }}>High-Throughput, Low-Latency Transactions</b>
                         <Box
                             style={{
-                                background: '#f0fdfa',
+                                background: '#e0f2fe',
                                 padding: 8,
                                 borderRadius: 8,
                                 marginTop: 4,
-                                border: `1.5px solid ${mintGreen}`,
-                                color: '#134e4a',
+                                border: `1.5px solid ${skyBlue}`,
+                                color: '#0e374e',
                                 fontWeight: 500,
                                 fontSize: 14,
                             }}
