@@ -171,20 +171,6 @@ export function QuoteDetails({
                     </ul>
                 </Box>
                 <Box
-                    as="ul"
-                    style={{
-                        margin: 0,
-                        paddingLeft: '1.2rem',
-                        color: 'var(--gray-11)',
-                        fontSize: 14,
-                        lineHeight: 1.6,
-                    }}
-                >
-                    <li>
-                        <b>Total Premium:</b> The final amount you pay, based on the Premium Factor and the selected duration. (Flat rate model)
-                    </li>
-                </Box>
-                <Box
                     style={{
                         background: 'linear-gradient(90deg, #fef9c3 60%, #f0fdfa 100%)',
                         border: '2px solid var(--amber-7)',
