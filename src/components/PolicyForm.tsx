@@ -120,6 +120,18 @@ export function PolicyForm() {
         return Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 100);
     }, [selectedRisk, paramValues]);
 
+    // add coverage & duration state
+    const [coverage, setCoverage] = useState<number>(1);
+    const [durationMonths, setDurationMonths] = useState<number>(1);
+
+    // calculate premium based on riskScore and coverage
+    const estimatedPremium = useMemo(
+        () => Number((coverage * riskScore / 100).toFixed(2)),
+        [coverage, riskScore],
+    );
+    // potential payout equals the coverage amount
+    const potentialPayout = coverage;
+
     return (
         <form>
             <Box mb="4">
@@ -180,15 +192,48 @@ export function PolicyForm() {
             <Box mb="3">
                 <label>
                     <Text as="span" mr="2">Coverage Amount (SOL):</Text>
-                    <input type="number" min="1" max="1000" step="1" style={{ padding: 6, borderRadius: 6, width: 120 }} />
+                    <input
+                        type="number"
+                        min="1"
+                        max="1000"
+                        step="1"
+                        value={coverage}
+                        onChange={e => setCoverage(Number(e.target.value))}
+                        style={{ padding: 6, borderRadius: 6, width: 120 }}
+                    />
                 </label>
             </Box>
             <Box mb="3">
                 <label>
                     <Text as="span" mr="2">Duration (months):</Text>
-                    <input type="number" min="1" max="12" step="1" style={{ padding: 6, borderRadius: 6, width: 80 }} />
+                    <input
+                        type="number"
+                        min="1"
+                        max="12"
+                        step="1"
+                        value={durationMonths}
+                        onChange={e => setDurationMonths(Number(e.target.value))}
+                        style={{ padding: 6, borderRadius: 6, width: 80 }}
+                    />
                 </label>
             </Box>
+
+            {/* simulation output */}
+            <Card mt="4" mb="4" style={{ backgroundColor: 'var(--green-2)'}}>
+                <Heading size="3" mb="2" style={{ color: 'var(--green-11)'}}>Insurance Quote Simulation</Heading>
+                <Flex direction="column" gap="1">
+                    <Text as="p" size="2">
+                        <strong>Estimated Premium:</strong> {estimatedPremium} SOL
+                    </Text>
+                    <Text as="p" size="2">
+                        <strong>Potential Payout (Coverage):</strong> {potentialPayout} SOL
+                    </Text>
+                    <Text as="p" size="1" color="gray" mt="1">
+                        This is an estimate. The final premium may vary. Payout occurs if the defined trigger event for the selected risk is met during the policy period.
+                    </Text>
+                </Flex>
+            </Card>
+
             <Button type="submit" color="green" size="3">
                 Buy Policy
             </Button>
