@@ -310,30 +310,161 @@ export function LocationMap({
                     </Card>
                 )}
 
-                {/* Climate data display - now more compact next to the map */}
-                {!climateLoading && climateData && (
-                    <Card style={{ 
-                        flex: '1 1 260px', 
-                        background: 'white',
-                        padding: '12px'
-                    }}>
-                        <Text size="2" weight="bold">Climate Summary</Text>
-                        <Text as="p" size="2">
-                            {climateData.current_condition[0].temp_C}°C, {climateData.current_condition[0].weatherDesc[0].value}
-                        </Text>
-                        <Text as="p" size="2">
-                            Humidity: {climateData.current_condition[0].humidity}% | Wind: {climateData.current_condition[0].windspeedKmph} km/h
-                        </Text>
-                        <Text as="p" size="2">
-                            Today: {climateData.weather[0].mintempC}°C to {climateData.weather[0].maxtempC}°C
-                        </Text>
-                    </Card>
-                )}
-                
+                {/* Climate data loading indicator */}
                 {climateLoading && (
                     <Text size="2" style={{ color: '#0e7490' }}>Loading climate data...</Text>
                 )}
             </Flex>
+
+            {/* Redesigned Current Conditions */}
+            {!climateLoading && climateData && (
+                <Box mt="3">
+                    <Heading size="3" mb="2" style={{ color: '#0369a1' }}>
+                        ✨ Current Conditions ✨
+                    </Heading>
+                    
+                    <Flex gap="3" wrap="wrap">
+                        {/* Temperature - Larger and more prominent */}
+                        <Card style={{ 
+                            background: getWeatherColor(parseInt(climateData.current_condition[0].temp_C)),
+                            padding: '16px', 
+                            flex: '1 1 140px',
+                            minHeight: '140px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                        }}>
+                            <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>TEMPERATURE</Text>
+                            <Text size="8" weight="bold" style={{ color: 'white' }}>
+                                {climateData.current_condition[0].temp_C}°C
+                            </Text>
+                            <Text size="1" style={{ color: 'white', opacity: 0.9 }}>
+                                {climateData.current_condition[0].temp_F}°F
+                            </Text>
+                            <Text size="6" style={{ marginTop: '4px' }}>
+                                {parseInt(climateData.current_condition[0].temp_C) > 30 ? '🔥' : 
+                                 parseInt(climateData.current_condition[0].temp_C) > 20 ? '☀️' : 
+                                 parseInt(climateData.current_condition[0].temp_C) > 10 ? '🌤️' : '❄️'}
+                            </Text>
+                        </Card>
+
+                        {/* Weather Condition */}
+                        <Card style={{ 
+                            background: 'linear-gradient(135deg, #60a5fa, #3b82f6)',
+                            padding: '16px', 
+                            flex: '1 1 140px',
+                            minHeight: '140px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                        }}>
+                            <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>CONDITION</Text>
+                            <Text size="6" style={{ marginBottom: '4px' }}>
+                                {climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('rain') ? '🌧️' :
+                                 climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('cloud') ? '☁️' :
+                                 climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('sun') ? '☀️' :
+                                 climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('clear') ? '🌞' :
+                                 climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('storm') ? '⛈️' :
+                                 climateData.current_condition[0].weatherDesc[0].value.toLowerCase().includes('snow') ? '❄️' : '🌈'}
+                            </Text>
+                            <Text size="2" weight="bold" style={{ color: 'white', textAlign: 'center' }}>
+                                {climateData.current_condition[0].weatherDesc[0].value}
+                            </Text>
+                        </Card>
+
+                        {/* Humidity */}
+                        <Card style={{ 
+                            background: 'linear-gradient(135deg, #22d3ee, #0ea5e9)',
+                            padding: '16px', 
+                            flex: '1 1 140px',
+                            minHeight: '140px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                        }}>
+                            <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>HUMIDITY</Text>
+                            <Text size="6" style={{ marginBottom: '4px' }}>💧</Text>
+                            <Text size="6" weight="bold" style={{ color: 'white' }}>
+                                {climateData.current_condition[0].humidity}%
+                            </Text>
+                        </Card>
+
+                        {/* Wind */}
+                        <Card style={{ 
+                            background: 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
+                            padding: '16px', 
+                            flex: '1 1 140px',
+                            minHeight: '140px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                        }}>
+                            <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>WIND SPEED</Text>
+                            <Text size="6" style={{ marginBottom: '4px' }}>🌬️</Text>
+                            <Text size="6" weight="bold" style={{ color: 'white' }}>
+                                {climateData.current_condition[0].windspeedKmph}
+                            </Text>
+                            <Text size="2" style={{ color: 'white', opacity: 0.9 }}>km/h</Text>
+                        </Card>
+
+                        {/* Today's Forecast */}
+                        <Card style={{ 
+                            background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+                            padding: '16px', 
+                            flex: '2 1 300px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                        }}>
+                            <Text size="2" weight="bold" style={{ color: 'white', opacity: 0.9 }}>TODAY'S FORECAST</Text>
+                            <Flex align="center" gap="3" style={{ marginTop: '8px' }}>
+                                <Box style={{ textAlign: 'center' }}>
+                                    <Text size="2" style={{ color: 'white', opacity: 0.9 }}>LOW</Text>
+                                    <Text size="6" weight="bold" style={{ color: 'white' }}>
+                                        {climateData.weather[0].mintempC}°C
+                                    </Text>
+                                    <Text size="5">❄️</Text>
+                                </Box>
+                                
+                                <Box style={{ height: '70px', width: '1px', background: 'rgba(255,255,255,0.3)' }} />
+                                
+                                <Box style={{ textAlign: 'center' }}>
+                                    <Text size="2" style={{ color: 'white', opacity: 0.9 }}>HIGH</Text>
+                                    <Text size="6" weight="bold" style={{ color: 'white' }}>
+                                        {climateData.weather[0].maxtempC}°C
+                                    </Text>
+                                    <Text size="5">🌡️</Text>
+                                </Box>
+                                
+                                <Box style={{ height: '70px', width: '1px', background: 'rgba(255,255,255,0.3)' }} />
+                                
+                                <Box style={{ textAlign: 'center' }}>
+                                    <Text size="2" style={{ color: 'white', opacity: 0.9 }}>SUNLIGHT</Text>
+                                    <Text size="6" weight="bold" style={{ color: 'white' }}>
+                                        {climateData.weather[0].sunHour}h
+                                    </Text>
+                                    <Text size="5">☀️</Text>
+                                </Box>
+                            </Flex>
+                        </Card>
+                    </Flex>
+                </Box>
+            )}
         </Box>
     );
 }
