@@ -40,7 +40,7 @@ export function RiskParameters({
     return groups;
   }, [params]);
 
-  // Get risk name for display
+  // Get risk score color based on score value
   const getScoreColor = (score: number) => {
     if (score < 33) return 'var(--green-9)';
     if (score < 66) return 'var(--orange-9)';
@@ -109,78 +109,71 @@ export function RiskParameters({
                 <Text size="1" color="gray" style={{ marginTop: 4 }}>
                   {param.description}
                 </Text>
+                {/* Min/Max labels */}
+                <Flex justify="between" mt="1">
+                  <Text size="1">{param.min}</Text>
+                  <Text size="1">{param.max}</Text>
+                </Flex>
               </Box>
             ))}
           </Box>
         </Card>
       ))}
+      
+      {/* Risk score display */}
+      <Card 
+        mt="4" 
+        style={{ 
+          background: 'var(--accent-2)',
+          padding: '16px',
+          borderRadius: '10px',
+          textAlign: 'center',
+          borderLeft: `4px solid ${getScoreColor(riskScore)}`
+        }}
+      >
+        <Text weight="bold" mb="2">Overall Risk Assessment</Text>
+        <Flex align="center" justify="center" gap="2">
+          <Text size="6">🎯</Text>
+          <Box>
+            <Text size="6" weight="bold" style={{ color: getScoreColor(riskScore) }}>
+              {riskScore}
+              <Text size="2" style={{ opacity: 0.7 }}>/100</Text>
+            </Text>
+          </Box>
+        </Flex>
+        <Text size="2" style={{ opacity: 0.7 }} mt="1">
+          {riskScore < 30 ? 'Low Risk Level' : 
+           riskScore < 70 ? 'Moderate Risk Level' : 'High Risk Level'}
+        </Text>
+        
+        {/* Risk meter visualization */}
+        <Box mt="2" style={{ padding: '0 16px' }}>
+          <Box style={{ 
+            height: '8px', 
+            background: 'linear-gradient(to right, var(--green-5), var(--amber-5), var(--red-5))',
+            borderRadius: '4px',
+            position: 'relative'
+          }}>
+            <Box style={{
+              position: 'absolute',
+              left: `${riskScore}%`,
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              background: getScoreColor(riskScore),
+              border: '2px solid white',
+              boxShadow: '0 0 4px rgba(0,0,0,0.3)'
+            }} />
+          </Box>
+          <Flex justify="between" mt="1">
+            <Text size="1">Low</Text>
+            <Text size="1">Medium</Text>
+            <Text size="1">High</Text>
+          </Flex>
+        </Box>
+      </Card>
     </Box>
   );
-}
-                        
-                        {/* Min/Max labels */}
-                        <Flex justify="between" mt="1">
-                            <Text size="1">{p.min}</Text>
-                            <Text size="1">{p.max}</Text>
-                        </Flex>
-                    </Card>
-                ))}
-            </Flex>
-            
-            {/* Risk score display */}
-            <Card 
-                mt="4" 
-                style={{ 
-                    background: 'var(--accent-2)',
-                    padding: '16px',
-                    borderRadius: '10px',
-                    textAlign: 'center',
-                    borderLeft: `4px solid ${getRiskScoreColor(riskScore)}`
-                }}
-            >
-                <Text weight="bold" mb="2">Overall Risk Assessment</Text>
-                <Flex align="center" justify="center" gap="2">
-                    <Text size="6">🎯</Text>
-                    <Box>
-                        <Text size="6" weight="bold" style={{ color: getRiskScoreColor(riskScore) }}>
-                            {riskScore}
-                            <Text size="2" style={{ opacity: 0.7 }}>/100</Text>
-                        </Text>
-                    </Box>
-                </Flex>
-                <Text size="2" style={{ opacity: 0.7 }} mt="1">
-                    {riskScore < 30 ? 'Low Risk Level' : 
-                     riskScore < 70 ? 'Moderate Risk Level' : 'High Risk Level'}
-                </Text>
-                
-                {/* Risk meter visualization */}
-                <Box mt="2" style={{ padding: '0 16px' }}>
-                    <Box style={{ 
-                        height: '8px', 
-                        background: 'linear-gradient(to right, var(--green-5), var(--amber-5), var(--red-5))',
-                        borderRadius: '4px',
-                        position: 'relative'
-                    }}>
-                        <Box style={{
-                            position: 'absolute',
-                            left: `${riskScore}%`,
-                            top: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: '12px',
-                            height: '12px',
-                            borderRadius: '50%',
-                            background: getRiskScoreColor(riskScore),
-                            border: '2px solid white',
-                            boxShadow: '0 0 4px rgba(0,0,0,0.3)'
-                        }} />
-                    </Box>
-                    <Flex justify="between" mt="1">
-                        <Text size="1">Low</Text>
-                        <Text size="1">Medium</Text>
-                        <Text size="1">High</Text>
-                    </Flex>
-                </Box>
-            </Card>
-        </Box>
-    );
 }
