@@ -22,6 +22,9 @@ export function InsurancePolicyPage() {
     // Handler for location sharing
     const handleShareLocation = () => {
         setLocating(true);
+        // Clear previous location and weather data
+        setLocationInfo(null);
+        setWeatherData(null);
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 pos => {

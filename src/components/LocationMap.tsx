@@ -47,6 +47,9 @@ export function LocationMap({
     // Fetch city and country once we have coords
     useEffect(() => {
         if (userLocation) {
+            // Clear previous location and climate data while fetching new
+            setLocationInfo(null);
+            setClimateData(null);
             setReverseLoading(true);
             fetch(
                 `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.lat}&lon=${userLocation.lng}`
