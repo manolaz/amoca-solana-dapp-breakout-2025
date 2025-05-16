@@ -6,6 +6,7 @@ import { BuyPolicyGuide } from './BuyPolicyGuide';
 import { LocationMap } from './LocationMap';
 import { PolicyForm } from './PolicyForm';
 import { InsuranceFAQ } from './InsuranceFAQ';
+import { LocationInfo } from './risk/types';
 
 export function InsurancePolicyPage() {
     // State for user location and map zoom/center
@@ -13,6 +14,10 @@ export function InsurancePolicyPage() {
     const [zoom, setZoom] = useState(1);
     const [center, setCenter] = useState<[number, number]>([0, 0]);
     const [locating, setLocating] = useState(false);
+    
+    // Add state for location info and weather data
+    const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
+    const [weatherData, setWeatherData] = useState<any | null>(null);
 
     // Handler for location sharing
     const handleShareLocation = () => {
@@ -36,6 +41,12 @@ export function InsurancePolicyPage() {
             alert('Geolocation is not supported by your browser.');
         }
     };
+    
+    // Handler for location detection with weather data
+    const handleLocationDetected = (info: LocationInfo, weather: any) => {
+        setLocationInfo(info);
+        setWeatherData(weather);
+    };
 
     return (
         <Box p="5">
@@ -53,8 +64,12 @@ export function InsurancePolicyPage() {
                 zoom={zoom}
                 locating={locating}
                 onShareLocation={handleShareLocation}
+                onLocationDetected={handleLocationDetected}
             />
-            <PolicyForm />
+            <PolicyForm 
+                locationInfo={locationInfo}
+                weatherData={weatherData}
+            />
             <InsuranceFAQ />
         </Box>
     );

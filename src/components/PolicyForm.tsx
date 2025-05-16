@@ -1,9 +1,10 @@
-import { Box, Button } from '@radix-ui/themes';
+import { Box, Button, Flex, Separator, Text } from '@radix-ui/themes';
 import { useState, useEffect, useMemo } from 'react';
 import { RiskTypeSelector } from './risk/RiskTypeSelector';
 import { RiskParameters } from './risk/RiskParameters';
 import { CoverageForm } from './coverage/CoverageForm';
 import { QuoteDetails } from './quote/QuoteDetails';
+import { ClaimSimulator } from './claim/ClaimSimulator';
 import { LocationInfo, RiskType } from './risk/types';
 import { baseRiskTypes } from './risk/baseRiskTypes';
 import { isCoastalLocation, isMountainousRegion } from '../utils/locationUtils';
@@ -176,10 +177,29 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
                 riskScore={riskScore}
                 estimatedPremium={estimatedPremium}
             />
+            
+            {/* Add claim simulator section */}
+            {weatherData && (
+                <>
+                    <Separator size="4" my="6" />
+                    <Text as="p" size="4" weight="medium" align="center" mb="4" style={{ color: '#1e40af' }}>
+                        See how parametric insurance works in action
+                    </Text>
+                    <ClaimSimulator 
+                        weatherData={weatherData}
+                        locationInfo={locationInfo}
+                        selectedRisk={selectedRisk}
+                        paramValues={paramValues}
+                        coverage={coverage}
+                    />
+                </>
+            )}
 
-            <Button type="submit" color="green" size="3">
-                Buy Policy
-            </Button>
+            <Flex mt="6" justify="center">
+                <Button type="submit" color="green" size="3">
+                    Buy Policy
+                </Button>
+            </Flex>
         </form>
     );
 }
