@@ -66,6 +66,26 @@ export function InsurancePolicyPage() {
                 onShareLocation={handleShareLocation}
                 onLocationDetected={handleLocationDetected}
             />
+            
+            {/* AMOCA Green Pool Image */}
+            <Box 
+                as="div" 
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    margin: '2rem 0'
+                }}
+            >
+                <img 
+                    src="amoca/green-pool.svg" 
+                    alt="AMOCA Green Pool" 
+                    style={{ 
+                        maxWidth: '240px', 
+                        height: 'auto' 
+                    }} 
+                />
+            </Box>
+            
             <PolicyForm 
                 locationInfo={locationInfo}
                 weatherData={weatherData}
