@@ -45,4 +45,3 @@ export function FeaturesSection({ selectedWalletAccount, errorBoundaryResetKeys 
     </DataList.Root>
   );
 }
-}
