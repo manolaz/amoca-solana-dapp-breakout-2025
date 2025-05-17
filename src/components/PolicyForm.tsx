@@ -184,6 +184,10 @@ export function PolicyForm({ locationInfo, weatherData }: PolicyFormProps) {
     </linearGradient>
   </defs>
   <rect width="100%" height="100%" rx="24" fill="url(#bg)" stroke="#38bdf8" stroke-width="3"/>
+  
+  <!-- AMOCA Logo -->
+  <image href="BLUE/bb.svg" x="20" y="20" width="60" height="60" />
+  
   <text x="50%" y="56" text-anchor="middle" font-size="28" font-family="Verdana" fill="#0e7490" font-weight="bold">
     Insurance Certificate
   </text>
